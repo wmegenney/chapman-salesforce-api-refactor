@@ -12,6 +12,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 				<ee:set-payload resource="dataweave/pCreateRlspReqPayload.dwl" />
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Log Relationship Details to SFDC" doc:id="bb197bfd-5311-46b0-96a0-1f1389b2d439" message="Relationship Details to SFDC : #[payload]"/>
 		<set-variable value="#[payload]" doc:name="Set Variable relationship to SFDC" doc:id="50df2b9a-e17c-4173-b65b-9dbb768c2133" variableName="relationshipToSFDC" />
 		<ee:transform doc:name="DW Initialize Response Variable" doc:id="cae28c55-f9a7-494b-8a18-dd4fc2560d96" >
 			<ee:message />
