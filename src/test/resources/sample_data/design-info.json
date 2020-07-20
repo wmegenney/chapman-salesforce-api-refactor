@@ -1,0 +1,10 @@
+{
+  "sampleData": {
+    "423153e2-e616-4cde-8531-65fabdb74292": {
+      "payload": "sample_data/list_json.json"
+    },
+    "ed85fc42-64b9-4f66-9d1d-169500c1e7cd": {
+      "vars-list_sfdc_results": "sample_data/list_unknown.dwl"
+    }
+  }
+}
