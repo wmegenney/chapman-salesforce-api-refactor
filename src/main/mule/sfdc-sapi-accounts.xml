@@ -7,9 +7,8 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
 	<sub-flow name="sfdc-sapi-accounts-create-flow" doc:id="bbea5a34-a9f3-45ee-802b-31b8ab0f2be5" >
-		<logger level="INFO" doc:name="LOG INFO Start of Flow" doc:id="97460fcc-5dec-4f31-8b1e-50670379f4ec" message="Start of create sapi account flow with initial payload"/>
+		<logger level="INFO" doc:name="LOG INFO Start of Flow" doc:id="97460fcc-5dec-4f31-8b1e-50670379f4ec" message="Start of create sapi account flow with initial payload : #[output application/json --- payload]"/>
 		<set-variable value="#[payload.AQB__AccountExternalID__c]" doc:name="Set Account External ID" doc:id="2af3283c-7415-4ea8-872b-a071fb9f84d2" variableName="accountExternalID" />
-		<logger level="INFO" doc:name="LOG Json payload" doc:id="c059e62b-a959-4d01-8ba5-c8da072178e4" message="#[output application/json --- payload]" />
 		<ee:transform doc:name="DW Request to Salesforce" doc:id="7342a0e7-435f-44ca-af2b-31799e315de8" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
