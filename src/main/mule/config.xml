@@ -22,8 +22,9 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 	</salesforce:sfdc-config>
 	<configuration-properties doc:name="Configuration properties" doc:id="dc55d147-7d58-4d8e-b71c-53e27877f80d" file="properties\application-properties.yaml" />
 	<global-property doc:name="Global Property" doc:id="62431ff1-752d-4721-a93e-941ee02d7e33" name="mule.env" value="loc" />
-	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="e1831d48-3b48-47b6-a93f-bdd6dbd0c3e9" file="properties/chapman-salesforce-api-${mule.env}.yaml" key="${key}">
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="323bc39f-dcf6-40be-9ac4-af6e588e18de" file="properties/chapman-salesforce-api-${mule.env}.yaml" key="${key}" >
 		<secure-properties:encrypt algorithm="Blowfish" />
 	</secure-properties:config>
+
 	
 </mule>

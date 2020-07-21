@@ -16,6 +16,6 @@ http:
 
 system:
   salesforce:
-    user: "apisero@chapman.edu.intgr"
-    password: "![X66vcQameIBFbFXAy83vdw==]"
-    authorizationUrl: "https://chapman--intgr.my.salesforce.com/services/Soap/u/46.0"
+    user: "integrationuser@chapman.edu.integrpart" #"apisero@chapman.edu.intgr"
+    password: "![X66vcQameIBFbFXAy83vdw==]" #"Genesis@2020"
+    authorizationUrl: "https://chapman--integrpart.my.salesforce.com/services/Soap/u/46.0" #"https://chapman--intgr.my.salesforce.com/services/Soap/u/46.0"
