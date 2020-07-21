@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<sub-flow name="sfdc-sapi-query-salesforce-flow" doc:id="1ad13386-e84d-422b-b3ac-f8f2adc800a0" >
+		<logger level="INFO" doc:name="LOG INFO Start of Flow" doc:id="ff8e8711-ef9d-4ea1-ab74-4d3f41197716" message="Start of query salesforce flow"/>
+		<ee:transform doc:name="DW get query from request" doc:id="ed266718-8a24-46c8-bd71-b9534a7d4951" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable resource="dataweave/vSfQuery.dwl" variableName="vSfQuery" />
+			</ee:variables>
+		</ee:transform>
+		<salesforce:query doc:name="Query Salesforce" doc:id="e51a5c2c-68fb-4d75-a393-aa009c08d1b8" config-ref="salesforce-config">
+			<salesforce:salesforce-query >#[vars.vSfQuery]</salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="DW convert response into Json" doc:id="d06e6851-96a6-4ed7-8280-1fe2bb02eab5">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="LOG INFO End of Flow" doc:id="53242690-f8b4-4d34-bbb7-01a080447188" message="End of query salesforce flow"/>
+	</sub-flow>
+</mule>
