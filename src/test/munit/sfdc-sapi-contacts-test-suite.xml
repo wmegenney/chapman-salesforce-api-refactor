@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="sfdc-sapi-contacts-test-suite.xml" />
+	<munit:test name="sfdc-sapi-contacts-test-suite-sfdc-sapi-contacts-create-flowTest" doc:id="8af022a7-104e-481c-a83d-ca6dfe56d9fc" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when upsert contact in salesforce" doc:id="c83b32eb-bcfd-4171-afa1-5ecd751ab44f" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert into Salesforce Contact object" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{
+    "Id": "0037A00000VSJZkQAP",
+    "type": "Contact"
+  }]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="849a6bed-398c-4566-a9f7-9bb3f1915f25" >
+				<munit:payload value="#[{
+	
+	&quot;AQB__ContactExternalID__c&quot;:&quot;indexOfConData.EMPLID&quot;,
+	&quot;FirstName&quot;:&quot;indexOfConData.FIRST_NAME as String&quot;,
+	&quot;LastName&quot; :&quot;indexOfConData.LAST_NAME as String&quot;,
+	&quot;MiddleName&quot;:&quot;indexOfConData.MIDDLE_NAME as String&quot;,
+	&quot;AQB__MaidenName__c&quot; :&quot;indexOfConData.MAIDEN_NAME&quot;,
+	&quot;AQB__AddressInUseType__c&quot; :&quot;addressPrefCalc(indexOfConData.ADDRESSPREF)&quot;,
+    &quot;AQB__CAECategory__c&quot; :&quot;indexOfConData.CAE&quot;,
+    &quot;MailingAddress&quot; :&quot;indexOfConData.MAILPREF&quot;,
+    &quot;MailingStreet&quot; :&quot;indexOfConData.STREET&quot;,
+    &quot;MailingCity&quot; :&quot;indexOfConData.CITY&quot;,
+    'MailingState':&quot;indexOfConData.STATEDESC&quot;,
+    'MailingPostalCode':&quot;indexOfConData.POSTAL&quot;,
+    'MailingCountry':&quot;indexOfConData.COUNTRYDESC&quot;,
+    &quot;AQB__DateofDeath__c&quot;:&quot;indexOfConData.DECEASEDDATE&quot;,
+    &quot;AQB__Deceased__c&quot;:&quot;indexOfConData.DECEASED as String as Boolean&quot;,
+    &quot;AQB__EmailPreference__c&quot;:&quot;emailPerfCalc(indexOfConData.EMAILPREF)&quot;,
+    &quot;AQB__Gender__c&quot;:&quot;indexOfConData.GENDER&quot;,
+    &quot;AQB__MaritalStatus__c&quot; :&quot;indexOfConData.MARITALSTATUS&quot;,
+    &quot;AQB__PlaceofBirth__c&quot;:&quot;indexOfConData.BIRTHPLACE&quot;,
+    &quot;Birthdate&quot; :&quot;indexOfConData.BIRTHDATE &quot;,
+    &quot;Email&quot; :&quot;indexOfConData.EMAIL&quot;,
+    &quot;AQB__PersonalEmail__c&quot; :&quot;indexOfConData.EMAIL&quot;,
+    &quot;AQB__BusinessEmail__c&quot; :&quot;indexOfConData.EMAIL&quot;,
+    &quot;AQB__SchoolEmail__c&quot; :&quot;indexOfConData.EMAIL&quot;,
+    &quot;Salutation&quot; :&quot;salutationCalc(indexOfConData.SALUTATION)&quot;,
+    &quot;AQB__SalutationLink__c&quot;:&quot;indexOfConData.SALUTATION&quot;,
+    &quot;AQB__CountryId__c&quot; :&quot;indexOfConData.COUNTRY&quot;,
+	&quot;AQB__County__c&quot; :&quot;indexOfConData.COUNTY&quot;,
+	&quot;AQB__Type__c&quot;:&quot;funConType::ConType(indexOfConData.AFFDESCSHORT as String)&quot;,
+	&quot;AQB__SecondaryType__c&quot;:&quot;indexOfConData.AFFDESCSHORT&quot;
+
+}]" mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\sfdc\contacts:application\json:sfdc-api-config" doc:id="e7acc92b-8218-489b-b176-8328cf1bbc6f" name="post:\sfdc\contacts:application\json:sfdc-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5a870f2b-5eb5-4f1f-ab57-bc05a3c5e9d3" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

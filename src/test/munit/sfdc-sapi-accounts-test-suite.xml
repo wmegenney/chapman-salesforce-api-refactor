@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="sfdc-sapi-accounts-test-suite.xml" />
+	<munit:test name="sfdc-sapi-accounts-test-suite-sfdc-sapi-accounts-create-flowTest" doc:id="01dc9189-f978-4269-816f-bce8fe6965f1" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when upsert account data into salesforce" doc:id="7e20165c-b1f7-446d-8a4f-f68c7b72577c" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert into Salesforce Account Object" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{
+    "Id": "0037A00000VSJZkQAP",
+    "type": "Contact"
+  }]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="4a033bd4-ff75-4eb0-a4db-4b289aa77d40" >
+				<munit:payload value='#[{		
+	"RecordTypeId": "0122E000000h0RDQAY",
+	"AQB__AccountType__c": "Household",
+	"AQB__AccountExternalID__c": "001122",
+	"Name": "Max",
+	"AQB__AccountStatus__c": "Active",
+	"AQB__AccountDefaultStreet__c": "downing street",
+	"AQB__AccountDefaultStatus__c": "Good",
+	"AQB__AccountDefaultCity__c": "LA",
+	"AQB__AccountDefaultStateId__c": "AZ",
+	"AQB__AccountDefaultZipCode__c": "12345",
+	"AQB__AccountDefaultCountry__c": "US",
+	"AQB__AccountDefaultCounty__c": "AB",
+	"AQB__CAECategory__c": "",
+	"BillingStreet": " Downing Street",
+	"BillingCity": "Lo",
+	"BillingState": "IL",
+	"BillingPostalCode": "32145",
+	"BillingCountry": "US",
+	"AQB__Email__c": "abc@gamil.com"
+ }]' mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\sfdc\accounts:application\json:sfdc-api-config" doc:id="de29ab13-ac35-4c5e-894d-cd3cccdf6e6e" name="post:\sfdc\accounts:application\json:sfdc-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="7567094e-d90c-43ec-b006-b988d797dc63" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
