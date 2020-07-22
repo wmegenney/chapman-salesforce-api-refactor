@@ -145,7 +145,7 @@ output application/json
 	<flow name="post:\sfdc\relationship:application\json:sfdc-api-config" doc:id="28cf19c2-9cb1-4a42-b9da-126dc5d55ede" >
 		<flow-ref doc:name="Flow Ref to sfdc-sapi-relationship-create-flow" doc:id="c55de790-4b95-4157-b09b-985142bc25cd" name="sfdc-sapi-relationship-create-flow" />
 	</flow>
-	<flow name="get:\sfdc\query:sfdc-api-config" doc:id="7ceedf8e-4b6f-415f-87ee-6c19310972af" >
+	<flow name="post:\sfdc\query:sfdc-api-config" doc:id="7ceedf8e-4b6f-415f-87ee-6c19310972af" >
 		<flow-ref doc:name="Flow Ref to sfdc-sapi-query-salesforce-flow" doc:id="301332cb-be74-4877-b97b-2f6c8876faa3" name="sfdc-sapi-query-salesforce-flow"/>
 	</flow>
     </mule>
