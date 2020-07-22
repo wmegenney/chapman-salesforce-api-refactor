@@ -3,7 +3,7 @@ output application/json
 var obj =[payload]
 ---
 obj map{
-  "EMPLID": "00" ++ $."EMPLID",
+  "EMPLID": $."EMPLID",
   "ADDRESSLONG": $."ADDRESSLONG",
   "ADDRESS_TYPE": $."ADDRESS_TYPE",
   "ADDRESS2": $."ADDRESS2",
