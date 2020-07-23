@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="sfdc-sapi-contacts-test-suite.xml" />
+	<munit:test name="sfdc-sapi-contacts-test-suite-sfdc-sapi-contacts-create-flowTest" doc:id="8af022a7-104e-481c-a83d-ca6dfe56d9fc" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when upsert contact in salesforce" doc:id="c83b32eb-bcfd-4171-afa1-5ecd751ab44f" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert into Salesforce Contact object" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{
+    "Id": "0037A00000VSJZkQAP",
+    "type": "Contact"
+  }]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="849a6bed-398c-4566-a9f7-9bb3f1915f25" >
+				<munit:payload value="#[{
+	
+	&quot;AQB__ContactExternalID__c&quot;:&quot;3232655&quot;,
+	&quot;FirstName&quot;:&quot;Max&quot;,
+	&quot;LastName&quot; :&quot;Mule&quot;,
+	&quot;MiddleName&quot;:&quot;&quot;,
+	&quot;AQB__MaidenName__c&quot; :&quot;Mule&quot;,
+	&quot;AQB__AddressInUseType__c&quot; :&quot;Home&quot;,
+    &quot;AQB__CAECategory__c&quot; :&quot;Other Individual&quot;,
+    &quot;MailingAddress&quot; :&quot;Irvine&quot;,
+    &quot;MailingStreet&quot; :&quot;Dowing street&quot;,
+    &quot;MailingCity&quot; :&quot;illinois&quot;,
+    'MailingState':&quot;AZ&quot;,
+    'MailingPostalCode':&quot;32652&quot;,
+    'MailingCountry':&quot;United States&quot;,
+    &quot;AQB__DateofDeath__c&quot;:&quot;&quot;,
+    &quot;AQB__Deceased__c&quot;: false,
+    &quot;AQB__EmailPreference__c&quot;:&quot;Personal Email&quot;,
+    &quot;AQB__Gender__c&quot;:&quot;M&quot;,
+    &quot;AQB__MaritalStatus__c&quot; :&quot;Married&quot;,
+    &quot;AQB__PlaceofBirth__c&quot;:&quot;Alhambra, CA&quot;,
+    &quot;Birthdate&quot; :&quot;&quot;,
+    &quot;Email&quot; :&quot;karencaporaso@gmail.com&quot;,
+    &quot;AQB__PersonalEmail__c&quot; :&quot;karencaporaso@gmail.com&quot;,
+    &quot;AQB__BusinessEmail__c&quot; :&quot;karencaporaso@gmail.com&quot;,
+    &quot;AQB__SchoolEmail__c&quot; :&quot;karencaporaso@gmail.com&quot;,
+    &quot;Salutation&quot; :&quot;Mr.&quot;,
+    &quot;AQB__SalutationLink__c&quot;:&quot;a0x7A0000018MxoQAE&quot;,
+    &quot;AQB__CountryId__c&quot; :&quot;USA&quot;,
+	&quot;AQB__County__c&quot; :&quot;	Orange&quot;,
+	&quot;AQB__Type__c&quot;:&quot;Friend&quot;,
+	&quot;AQB__SecondaryType__c&quot;:&quot;Parent&quot;
+
+}]" mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\sfdc\contacts:application\json:sfdc-api-config" doc:id="e7acc92b-8218-489b-b176-8328cf1bbc6f" name="post:\sfdc\contacts:application\json:sfdc-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5a870f2b-5eb5-4f1f-ab57-bc05a3c5e9d3" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

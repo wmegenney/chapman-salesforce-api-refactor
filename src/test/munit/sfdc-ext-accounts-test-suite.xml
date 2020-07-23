@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="sfdc-ext-accounts-test-suite.xml" />
+	<munit:test name="sfdc-ext-accounts-test-suite-sfdc-ext-accounts-flowTest" doc:id="e8ee5ec5-24d6-4bd1-9f78-39cebd1b903c" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when upsert salesforce" doc:id="5db2c4b3-b565-4a57-9bb5-abedba4c3b78" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert into Salesforce LL institution object" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{
+    "Id": "0037A00000VSJZkQAP",
+    "type": "Contact"
+  }]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="3802aa17-5e70-49a0-b5f7-23001ed33a0e" >
+				<munit:payload value='#[{
+	"AQC_Inst_ID__c": "0016638",
+	"Name": "John Abbott College",
+	"AQC_Inst_City__c": "Sainte-Anne-De-Bellevue",
+	"AQC_Inst_State__c": "QC",
+	"AQC_Inst_Country__c": "Canada"
+}]' mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\sfdc\ext-org-accounts:application\json:sfdc-api-config" doc:id="0cad1fd4-477b-413e-833a-9e1fb4f1c4eb" name="post:\sfdc\ext-org-accounts:application\json:sfdc-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="ee18e284-435b-4275-b6a5-6631517df655" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
