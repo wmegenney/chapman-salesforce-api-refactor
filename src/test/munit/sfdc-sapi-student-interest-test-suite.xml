@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="sfdc-sapi-student-interest-test-suite.xml" />
+	<munit:test name="sfdc-sapi-student-interest-test-suite-sfdc-sapi-student-interest-flowTest" doc:id="334fb732-8728-41fb-8ed5-2b7f7e982945" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when create interest in salesforce" doc:id="4a6c7fc8-c95d-4272-9fce-74eb70cf526f" processor="salesforce:create">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Create Student Interest in Salesforce" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{Id:"54548541545", item:[],successful:true}]' mediaType="application/java" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when upsert data in salesforce" doc:id="ce2c9bb0-22e4-4ac9-a3a2-c31aed497c18" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert Student Interest into Salesforce" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{Id:"54548541545", item:[],successful:true}]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="d4ae1f29-9849-4334-a7aa-b2e339c44d8d" >
+				<munit:payload value='#[[{
+DESCR_GROUP_TYPE:"International Students Org",
+DESCR_POSITION:"Board Member",
+START_DT_DAY:"1",
+START_DT_MONTH:"2",
+START_DT_YEAR:"2016",
+END_DT_DAY:"21",
+END_DT_MONTH:"12",
+END_DT_YEAR:"2017"
+}]]' mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post:\sfdc\student-interest:application\json:sfdc-api-config" doc:id="e0c439ad-e994-41fb-86f2-9fae47532e0e" name="post:\sfdc\student-interest:application\json:sfdc-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="2fbe3605-82f8-4562-b606-733f25e6cbc3" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
