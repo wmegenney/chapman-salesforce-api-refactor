@@ -8,7 +8,7 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="sfdc-sapi-relationship-test-suite.xml" />
-	<munit:test name="sfdc-sapi-relationship-test-suite-sfdc-sapi-relationship-create-flowTest" doc:id="9c900c21-ced4-4313-b0f7-cb0c526f5bc8" description="Test" ignore="true">
+	<munit:test name="sfdc-sapi-relationship-test-suite-sfdc-sapi-relationship-create-flowTest" doc:id="9c900c21-ced4-4313-b0f7-cb0c526f5bc8" description="Test">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock when create relation contact in salesforce" doc:id="3c555b62-43f0-40be-914a-02fb436cca96" processor="salesforce:create">
 				<munit-tools:with-attributes >
@@ -30,7 +30,7 @@ RELENDED:"",
 RELATEDEMPLID:"655542",
 RELATIONSHIP:"Parent",
 REVRELATIONSHIP:"Child",
-STARTDATE:"10-07-94",
+STARTDATE:"2013-09-29T18:46:19",
 STARTED:"On"
 	
 }]]' mediaType="application/java" />
