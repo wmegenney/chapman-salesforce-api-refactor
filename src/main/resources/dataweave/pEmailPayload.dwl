@@ -7,8 +7,8 @@ obj map{
   
     "EMPLID": $."EMPLID",
     "EMAIL_ADDR": $."EMAIL_ADDR",
-    "PREF_EMAIL_FLAG": $."PREF_EMAIL_FLAG",
-    "ADDRESS_TYPE": $."E_ADDR_TYPE"
+    "ADDRESS_TYPE": $."SCC_EMAILTYP_DESC",
+    "STATUS": $."XC_AQ_STATUS"
 
 
 }
