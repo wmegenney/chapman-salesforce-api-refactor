@@ -6,9 +6,9 @@ var obj = [vars.varCreateRecords]
 var address = obj map (
 	{
     "RecordTypeId" : "address",	
-    "AQB__Account__c": $."",
+    "AQB__Account__c": if (($."ADDR_TYPE_SHORT" == "Billing") or( $."ADDR_TYPE_SHORT" =="Check") or ($."ADDR_TYPE_SHORT" =="Other" ) or( $."ADDR_TYPE_SHORT" =="Other 2" )or ( $."ADDR_TYPE_SHORT" =="SEVIS US") or ( $."ADDR_TYPE_SHORT" =="SEVIS Foreign" ) or ( $."ADDR_TYPE_SHORT" =="Permanent")) $."ADDR_TYPE_SHORT" else "",
     "AQB__AccountExternalIDLinkField__c": $."EMPLID",
-    "AQB__Contactid__c": $."",			
+    "AQB__Contactid__c": if(($."ADDR_TYPE_SHORT" =="Business" ) or( $."ADDR_TYPE_SHORT" =="Legal" ) or( $."ADDR_TYPE_SHORT" =="Campus")) $."ADDR_TYPE_SHORT" else "",			
 	"AQB__ContactExternalIDLinkField__c": $."EMPLID",
 	"AQB__Type__c": capitalize($."ADDR_TYPE_SHORT") default "",
     "AQB__Street__c": $."ADDRESSLONG" default "",
