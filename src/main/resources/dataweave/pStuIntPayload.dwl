@@ -2,7 +2,7 @@
 output application/java
 ---
 payload map(value, index) ->{
-		//"AQB__Contact__c": "HYPERLINK( {AQB__ContactId__c: " ++ ("000195970" default '') ++ ",type: 'Education'}  , {AQB__ContactId__c.FirstName: " ++ ("000195970" default '') ++ ",type: 'Contact'}  , {AQB__ContactId__c.LastName: " ++ ("000195970" default '') ++ " ,type: 'Contact'} , _self)",
+		//"AQB__Contactid__c" : "HYPERLINK( AQB__EducationId__r.AQB__ContactId__c , AQB__EducationId__r.AQB__ContactId__r.FirstName + ' ' + AQB__EducationId__r.AQB__ContactId__r.LastName , '_self')",
 		/*"AQB__EducationLink__r": {
 			"AQB__Contact__r": {
 			AQB__ContactExternalID__c: "0000013", //value.EMPLID ,
@@ -10,9 +10,15 @@ payload map(value, index) ->{
 			},
 			"type": "AQB__Education__c"
 		},*/
-		AQB__EducationLink__c: "",
-		"AQB__InterestType__r": {
-			Name: "Mortar Board National Honor Society",//value.DESCR_GROUP_TYPE,
+		
+		"AQB__EducationLink__r": {
+			Name: value.XC_AQ_DEG_LVL,
+			"type" : 'AQB__EducationLink__c'
+			
+		},
+		"AQB__EducationalInstitution__c" : "Chapman University" ,
+		"AQB__InterestType__c": {
+			Name: value.DESCR_GROUP_TYPE,
 			"type": 'AQB__LLStudentInterestType__c'
 			}, //
 		"AQB__Position__c": value.DESCR_POSITION,
