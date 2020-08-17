@@ -5,7 +5,7 @@ var obj=[payload]
 obj map{
   
   
-   "EMPLID":  $."EMPLID",
+  "EMPLID":  $."EMPLID",
   "PHONE_TYPE": $."SCC_PHONETYP_DESC",
   "PHONE": $."PHONE",
   "STATUS": $."XC_AQ_STATUS",

@@ -6,13 +6,13 @@ var obj = [vars.varCreateRecords]
 var address = obj map (
 	{
     "RecordTypeId" : "address",	
-    "AQB__Account__c":{
-    	AQB__AccountExternalID__c: if ((capitalize($."ADDR_TYPE_SHORT") == "BILLING") or( capitalize($."ADDR_TYPE_SHORT") =="CHECK") or (capitalize($."ADDR_TYPE_SHORT") =="OTHER" ) or( capitalize($."ADDR_TYPE_SHORT") =="OTHER 2" )or ( capitalize($."ADDR_TYPE_SHORT") =="SEVIS US") or ( capitalize($."ADDR_TYPE_SHORT") =="SEVIS FOREIGN" ) or ( capitalize($."ADDR_TYPE_SHORT") =="PERMANENT")) $."EMPLID" else null,
+    "AQB__Account__r":{
+    	AQB__AccountExternalID__c: if ((capitalize($."ADDR_TYPE_SHORT") == "Billing") or( capitalize($."ADDR_TYPE_SHORT") =="Check") or (capitalize($."ADDR_TYPE_SHORT") =="Other" ) or( capitalize($."ADDR_TYPE_SHORT") =="Other 2" )or ( capitalize($."ADDR_TYPE_SHORT") =="Sevis Us") or ( capitalize($."ADDR_TYPE_SHORT") =="Sevis Foreign" ) or ( capitalize($."ADDR_TYPE_SHORT") =="Permanent")) $."EMPLID" else null,
 			"type": "Account"
     },
     "AQB__AccountExternalIDLinkField__c": $."EMPLID",
-    "AQB__ContactId__c":{
-    	AQB__ContactExternalID__c: if((capitalize($."ADDR_TYPE_SHORT") =="BUSINESS" ) or( capitalize($."ADDR_TYPE_SHORT") =="LEGAL" ) or( capitalize($."ADDR_TYPE_SHORT") =="CAMPUS")) $."EMPLID" else null,
+    "AQB__Contact__r":{
+    	AQB__ContactExternalID__c: if((capitalize($."ADDR_TYPE_SHORT") =="Business" ) or( capitalize($."ADDR_TYPE_SHORT") =="Legal" ) or( capitalize($."ADDR_TYPE_SHORT") =="Campus")) $."EMPLID" else null,
 			"type": "Contact"
     },			
 	"AQB__ContactExternalIDLinkField__c": $."EMPLID",
@@ -32,7 +32,7 @@ var email= obj map{
 	
 	"RecordTypeId" : "email",
     "AQB__ContactExternalIDLinkField__c": $."EMPLID",	
-    "AQB__ContactId__c":{
+    "AQB__Contact__r":{
     	AQB__ContactExternalID__c: $."EMPLID",
 			"type": "Contact"
     },
@@ -44,13 +44,13 @@ var email= obj map{
 var phone= obj map{
   
   "RecordTypeId" : "phone",
-  "AQB__ContactId__c":{
-    	AQB__ContactExternalID__c: if((capitalize($."PHONE_TYPE") !="HOME" ) and (capitalize($."PHONE_TYPE")!="MAIN" )) $."EMPLID" else null,
+  "AQB__Contact__r":{
+    	AQB__ContactExternalID__c: if(!(capitalize($."PHONE_TYPE") =="Home" ) or (capitalize($."PHONE_TYPE")=="Main" )) $."EMPLID" else null,
 			"type": "Contact"
     },
   "AQB__ContactExternalIDLinkField__c": $."EMPLID",
-  "AQB__Account__c":{
-    	AQB__AccountExternalID__c: if((capitalize($."PHONE_TYPE") =="HOME" ) or (capitalize($."PHONE_TYPE") =="MAIN" )) $."EMPLID" else null,
+  "AQB__Account__r":{
+    	AQB__AccountExternalID__c: if((capitalize($."PHONE_TYPE") =="Home" ) or (capitalize($."PHONE_TYPE") =="Main" )) $."EMPLID" else null,
 			"type": "Account"
     },
   "AQB__AccountExternalIDLinkField__c": $."EMPLID",

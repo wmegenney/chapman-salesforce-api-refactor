@@ -5,7 +5,7 @@ var obj =[payload]
 obj map{
   "EMPLID": $."EMPLID",
   "ADDRESSLONG": $."ADDRESSLONG",
-  "ADDRESS_TYPE": $."ADDRESS_TYPE_SHORT",
+  "ADDRESS_TYPE": $."ADDR_TYPE_SHORT",
   "CITY": $."CITY",
   "COUNTY": $."COUNTY",
   "ADDR_TYPE_SHORT": $."ADDR_TYPE_SHORT",
