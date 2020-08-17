@@ -15,7 +15,6 @@ var address=obj map (
     "AQB__Country__c": $."COUNTRY_NM" default "",
     "AQB__StateId__c": $."STATE" default "",
     "AQB__PostalCode__c": $."POSTAL" default "",
-    "AQB__Account__c": $."",
     "AQB__Status__c": $."STATUS"
     
 	}
@@ -31,6 +30,7 @@ var email= obj map{
 var phone= obj map{
   
     "Id": $."Id" default "",
+    "AQB__Type__c": $."PHONE_TYPE",
     "AQB__Phone__c": $."PHONE",
     "AQB__Status__c": $."STATUS"
 
