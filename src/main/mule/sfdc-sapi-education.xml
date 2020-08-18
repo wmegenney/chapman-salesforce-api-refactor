@@ -136,8 +136,8 @@ output application/json
 			"type": "AQB__Education__c"			
       },
       "Name": payload[0].Name,
-      "Major_Minor__c": "Business Administration",
-      "Emphasis_Specialization_Track__c": "Information Security Mgmt"
+      "Major_Minor__c": vars.degree."Major_Minor__c",
+      "Emphasis_Specialization_Track__c": vars.degree."Emphasis_Specialization_Track__c"
     }]]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
