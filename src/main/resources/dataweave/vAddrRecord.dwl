@@ -5,7 +5,7 @@ var viewname = attributes.queryParams.ViewName
 var obj = [vars.varCreateRecords]
 var address = obj map (
 	{
-    "RecordTypeId" : "address",	
+    "RecordTypeId" : "0122E000000h0QxQAI",	
     "AQB__Account__r":{
     	AQB__AccountExternalID__c: if ((capitalize($."ADDR_TYPE_SHORT") == "Billing") or( capitalize($."ADDR_TYPE_SHORT") =="Check") or (capitalize($."ADDR_TYPE_SHORT") =="Other" ) or( capitalize($."ADDR_TYPE_SHORT") =="Other 2" )or ( capitalize($."ADDR_TYPE_SHORT") =="Sevis Us") or ( capitalize($."ADDR_TYPE_SHORT") =="Sevis Foreign" ) or ( capitalize($."ADDR_TYPE_SHORT") =="Permanent")) $."EMPLID" else null,
 			"type": "Account"
@@ -30,7 +30,7 @@ var address = obj map (
 )
 var email= obj map{
 	
-	"RecordTypeId" : "email",
+	"RecordTypeId" : "0122E000000h0QyQAI",
     "AQB__ContactExternalIDLinkField__c": $."EMPLID",	
     "AQB__Contact__r":{
     	AQB__ContactExternalID__c: $."EMPLID",
@@ -43,7 +43,7 @@ var email= obj map{
 
 var phone= obj map{
   
-  "RecordTypeId" : "phone",
+  "RecordTypeId" : "0122E000000h0R6QAI",
   "AQB__Contact__r":{
     	AQB__ContactExternalID__c: if(!(capitalize($."PHONE_TYPE") =="Home" ) or (capitalize($."PHONE_TYPE")=="Main" )) $."EMPLID" else null,
 			"type": "Contact"
