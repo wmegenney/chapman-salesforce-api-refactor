@@ -136,6 +136,7 @@ output application/json
 			"type": "AQB__Education__c"			
       },
       "Name": payload[0].Name,
+      "Status_Date__c": vars.degree."Status_Date__c",
       "Major_Minor__c": vars.degree."Major_Minor__c",
       "Emphasis_Specialization_Track__c": vars.degree."Emphasis_Specialization_Track__c"
     }]]]></ee:set-payload>
