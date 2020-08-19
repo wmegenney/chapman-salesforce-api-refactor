@@ -103,7 +103,6 @@ payload.degree]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<salesforce:create-single doc:name="Create single Education into Salesforce" doc:id="db9b0455-d830-4aa7-b4b2-d9a51e4cd382" config-ref="salesforce-config" type="AQB__Education__c" >
-			<salesforce:record ><![CDATA[#[payload -- "degree"]]]></salesforce:record>
 		</salesforce:create-single>
 		<ee:transform doc:name="DW add incremental sfdc_result to list" doc:id="e1bcb8d8-f0e8-450d-9a96-e162c67583f6">
 				<ee:message>
@@ -136,6 +135,10 @@ output application/json
 			"type": "AQB__Education__c"			
       },
       "Name": payload[0].Name,
+      "Type__c": vars.degree."Type__c",
+  	  "Status__c": vars.degree."Status__c",
+      "Department__c": vars.degree."Department__c",
+      "School__c": vars.degree."School__c",
       "Status_Date__c": vars.degree."Status_Date__c",
       "Major_Minor__c": vars.degree."Major_Minor__c",
       "Emphasis_Specialization_Track__c": vars.degree."Emphasis_Specialization_Track__c"
