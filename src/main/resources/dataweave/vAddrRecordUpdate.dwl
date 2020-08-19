@@ -30,7 +30,7 @@ var email= obj map{
 var phone= obj map{
   
     "Id": $."Id" default "",
-    "AQB__Type__c": $."PHONE_TYPE",
+    "AQB__Type__c": capitalize($.ADDRESS_TYPE),
     "AQB__Phone__c": $."PHONE",
     "AQB__Status__c": $."STATUS"
 

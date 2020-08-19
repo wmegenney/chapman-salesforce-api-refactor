@@ -17,13 +17,7 @@ var address = obj map (
 			"type": "Contact"
     })  if((capitalize($."ADDR_TYPE_SHORT") =="Business" ) or( capitalize($."ADDR_TYPE_SHORT") =="Legal" ) or( capitalize($."ADDR_TYPE_SHORT") =="Campus")),			
 	"AQB__ContactExternalIDLinkField__c": $."EMPLID",
-	"AQB__Type__c": if(capitalize($."ADDR_TYPE_SHORT") == "Home") "Mailing" else if ((capitalize($."ADDR_TYPE_SHORT") == "Business") or(capitalize($."ADDR_TYPE_SHORT") == "Business")) "Business" 
-	
-	 else if((capitalize($."ADDR_TYPE_SHORT") == "Second Business") or (capitalize($."ADDR_TYPE_SHORT") == "Third Business") or (capitalize($."ADDR_TYPE_SHORT") == "Fourth Business")) "Additional Business"
-
-	 else if ((capitalize($."ADDR_TYPE_SHORT") == "Sevis Foreign") or (capitalize($."ADDR_TYPE_SHORT") == "Sevis Us") or (capitalize($."ADDR_TYPE_SHORT") == "Check")or (capitalize($."ADDR_TYPE_SHORT") == "Legal") or (capitalize($."ADDR_TYPE_SHORT") == "Degree") or (capitalize($."ADDR_TYPE_SHORT") == "Other 2") or (capitalize($."ADDR_TYPE_SHORT") == "Billing")) "Alternate"
-
-	 else "Alternate",
+	"AQB__Type__c": capitalize($."ADDR_TYPE_SHORT"),
     "AQB__Street__c": $."ADDRESSLONG" default "",
     "AQB__City__c": $."CITY" default "",
     "AQB__County__c": $."COUNTY" default "",
@@ -61,7 +55,7 @@ var phone= obj map{
 			"type": "Account"
     }) if((capitalize($."PHONE_TYPE") =="Home" ) or (capitalize($."PHONE_TYPE") =="Main" )),
   "AQB__AccountExternalIDLinkField__c": $."EMPLID",
-  "AQB__Type__c": $."PHONE_TYPE",   
+  "AQB__Type__c": capitalize($.ADDRESS_TYPE),   
    "AQB__Phone__c": $."PHONE",
    "AQB__Status__c": $."STATUS"
 
