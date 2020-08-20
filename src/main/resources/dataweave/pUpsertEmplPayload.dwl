@@ -32,7 +32,7 @@ payload map (value, index) -> {
 		"type": 'Account'
 	},
 	"AQB__EmploymentExternalID__c": value.EMPLID,
-	"AQB__EndDate__c": value.END_DT as LocalDateTime {format: "yyyy-MM-dd'T'HH:mm:ss"},
+	"AQB__EndDate__c": value.END_DT as LocalDateTime {format: "yyyy-MM-dd'T'HH:mm:ss"} default '',
 	"AQB__Ended__c": startedOrEnded(lower(value.XC_AQ_ENDED)),
 	"AQB__StartDate__c": value.START_DT as LocalDateTime {format: "yyyy-MM-dd'T'HH:mm:ss"} default '',
 	"AQB__Started__c": startedOrEnded(lower(value.XC_AQ_STARTED)),
@@ -40,6 +40,5 @@ payload map (value, index) -> {
 	"AQB__Title__c": value.BUSINESS_TITLE,
 	"Department_ID__c": value.DEPTID,
 	"Department_Name__c": value.DEPTNAME,
-	// "AQB__IsPrimaryEmployer__c": "YES",
 	"AQB__Source__c": 'Campus Solutions'
 }
