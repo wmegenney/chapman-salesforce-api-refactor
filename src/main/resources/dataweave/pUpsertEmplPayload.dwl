@@ -23,10 +23,6 @@ payload map (value, index) -> {
 		"AQB__ContactExternalID__c": value.EMPLID,
 		"type": 'Contact'
 	},
-	"AQB__Contact__r": {
-		AQB__ContactExternalID__c: value.EMPLID,
-		"type": 'Contact'
-	},
 	"AQB__LinkedEmployer__r": {
 		"AQB__AccountExternalID__c": value.EMPLID,
 		"type": 'Account'
