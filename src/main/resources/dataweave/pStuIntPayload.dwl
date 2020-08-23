@@ -4,7 +4,7 @@ output application/java
 payload map(value, index) ->{
 		//"AQB__Contact__c": "HYPERLINK( {AQB__ContactId__c: " ++ ("000195970" default '') ++ ",type: 'Education'}  , {AQB__ContactId__c.FirstName: " ++ ("000195970" default '') ++ ",type: 'Contact'}  , {AQB__ContactId__c.LastName: " ++ ("000195970" default '') ++ " ,type: 'Contact'} , _self)",
 		/*"AQB__EducationLink__r": {
-			"AQB__Contact__c": {
+			"AQB__Contact__r": {
 			AQB__ContactExternalID__c: "0000013", //value.EMPLID ,
 			"type": 'Contact'
 			},
