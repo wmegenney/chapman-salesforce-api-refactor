@@ -5,12 +5,10 @@ var obj=[payload]
 obj map{
   
   
-   "EMPLID":  $."EMPLID",
-  "COUNTRY_CODE": $."COUNTRY_CODE",
-  "PHONE_TYPE": $."PHONE_TYPE",
-  "EXTENSION": $."EXTENSION",
+  "EMPLID":  $."EMPLID",
+  "PHONE_TYPE": $."SCC_PHONETYP_DESC",
   "PHONE": $."PHONE",
-  "PREF_PHONE_FLAG": $."PREF_PHONE_FLAG"
-
+  "STATUS": $."XC_AQ_STATUS",
+  "ADDRESS_TYPE": $."SCC_PHONETYP_DESC", // because its required in SF query further
 
 }
