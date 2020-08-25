@@ -1,9 +1,10 @@
 %dw 2.0
+import * from dw::core::Strings
 output application/json
 var obj =[payload]
 ---
 obj map{
-  "EMPLID": $."EMPLID",
+  "EMPLID": leftPad($."EMPLID", 9, "0"),
   "ADDRESSLONG": $."ADDRESSLONG",
   "ADDRESS_TYPE": $."ADDR_TYPE_SHORT",
   "CITY": $."CITY",
