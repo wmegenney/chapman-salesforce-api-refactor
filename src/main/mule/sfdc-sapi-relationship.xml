@@ -23,10 +23,11 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<foreach doc:name="For Each" doc:id="1bd3f7e3-28ed-4b47-a644-290273e133dc" collection="#[vars.relationshipToSFDC]" >
+			<logger level="INFO" doc:name="LOG Payload" doc:id="66c51ad4-d716-4111-aa76-23e4374cd7f8" message="Sf relationship request : #[payload]"/>
 			<salesforce:create type="AQB__RelationshipContact__c" doc:name="Create relationship contact in Salesforce" doc:id="b10a7cd6-9ce6-42d3-9645-606bd9ac6a4e" config-ref="salesforce-config" target="sfdcRelationResponse" >
 				<salesforce:records ><![CDATA[#[[payload]]]]></salesforce:records>
 			</salesforce:create>
-			<logger level="INFO" doc:name="LOG Payload" doc:id="1a9eda7e-9aaa-490b-975a-60f5b019f712" message="#[output application/json --- payload]" />
+			<logger level="INFO" doc:name="LOG Payload" doc:id="1a9eda7e-9aaa-490b-975a-60f5b019f712" message="#[output application/json --- vars.sfdcRelationResponse]" />
 			<ee:transform doc:name="DW Add incremental sfdc_result to list" doc:id="6acd9db2-e49d-494c-949c-9bc4b8a045e0" >
 				<ee:message />
 				<ee:variables >
