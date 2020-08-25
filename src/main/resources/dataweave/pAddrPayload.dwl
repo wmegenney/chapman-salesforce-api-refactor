@@ -17,6 +17,5 @@ obj map{
   "COUNTRY_NM": $."COUNTRY_NM",
   "STATE": $."STATE",
   "POSTAL": $."POSTAL",
-  "ADDRESSLINE": $."ADDRESSLINE",
   "STATUS": $."XC_AQ_STATUS"
 }
