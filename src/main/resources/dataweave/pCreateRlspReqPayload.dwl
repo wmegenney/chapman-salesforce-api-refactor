@@ -19,13 +19,13 @@ payload default [] map (indexOfDBConData, dbConData) -> {
 		"type": 'Contact'
 	},
 	"AQB__relatedContact__r": {
-		"AQB__ContactExternalID__c": indexOfDBConData.RELATEDEMPLID,
+		"AQB__ContactExternalID__c": "00" ++ (indexOfDBConData.RELATEDEMPLID as String),
 		"type": 'Contact'
 	},
 	"AQB__EndDate__c": indexOfDBConData.RELENDDATE,
 	"AQB__Ended__c": indexOfDBConData.RELENDED,
-	"AQB__Relationship__c": indexOfDBConData.RELATIONSHIP,
-	"AQB__ReverseRelationship__c": indexOfDBConData.REVRELATIONSHIP,
+	"AQB__Relationship__c": "Child",// indexOfDBConData.RELATIONSHIP,
+	"AQB__ReverseRelationship__c": "Parent", //indexOfDBConData.REVRELATIONSHIP,
 	"AQB__StartDate__c": indexOfDBConData.STARTDATE as Date {format: "yyyy-MM-dd'T'HH:mm:ss"},
 	"AQB__Started__c": indexOfDBConData.STARTED,
 	"AQB__Relationship_Type__c": RelType(indexOfDBConData.RELATIONSHIP as String),
