@@ -49,27 +49,4 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="LOG INFO End" doc:id="35fbe3e6-b77b-47e4-9f69-2eebfd69e25b" message="SF Contacts response payload : #[output application/json --- payload]" /> 
     
 	</sub-flow>
-	<sub-flow name="sfdc-sapi-contact-get-flow" doc:id="7bf82bd8-49ee-4459-9449-4c3e4f24aaea" >
-		<logger level="INFO" doc:name="LOG INFO Start" doc:id="51f0d7ff-cd48-4919-9946-bfa95aa3b2ce" message="Start of Get Contact flow" />
-		<set-variable value="#[attributes.queryParams.'contactId']" doc:name="Store contactId" doc:id="0dd0416e-0f31-4377-b4a4-c5e44ffe8846" variableName="contactId"/>
-		<logger level="INFO" doc:name="LOG INFO SF contactId" doc:id="e2ba2ba0-3e89-40d4-885e-88cb1d4f391f" message="SF Contacts get request : #[vars.contactId]"/>
-		<salesforce:query doc:name="Query Salesforce" doc:id="e89aabe4-ddf6-4f50-8ceb-91a7726dcd5d" config-ref="salesforce-config">
-			<reconnect />
-			<salesforce:salesforce-query >SELECT AccountId FROM Contact WHERE AQB__ContactExternalID__c = ':contactId'</salesforce:salesforce-query>
-			<salesforce:parameters ><![CDATA[#[output application/java
----
-{
-	"contactId" : "00" ++ vars.contactId
-}]]]></salesforce:parameters>
-		</salesforce:query>
-		<ee:transform doc:name="DW SF Response" doc:id="e380b229-a818-43a9-90aa-dc16c244802b" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" doc:name="LOG INFO End" doc:id="67b79531-7fd8-409b-9743-c8355e09034c" message="SF Get Contact response payload : #[output application/json --- payload]"/>
-	</sub-flow>
 </mule>

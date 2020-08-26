@@ -148,7 +148,4 @@ output application/json
 	<flow name="post:\sfdc\query:sfdc-api-config" doc:id="7ceedf8e-4b6f-415f-87ee-6c19310972af" >
 		<flow-ref doc:name="Flow Ref to sfdc-sapi-query-salesforce-flow" doc:id="301332cb-be74-4877-b97b-2f6c8876faa3" name="sfdc-sapi-query-salesforce-flow"/>
 	</flow>
-	<flow name="get:\sfdc\contacts:sfdc-api-config" doc:id="25f21a09-2518-4361-9bc3-8d87426b5490" >
-		<flow-ref doc:name="Flow Ref to sfdc-sapi-contact-get-flow" doc:id="a4ba92d6-b45f-44bc-b53a-282ff707c6ee" name="sfdc-sapi-contact-get-flow" />
-	</flow>
     </mule>
