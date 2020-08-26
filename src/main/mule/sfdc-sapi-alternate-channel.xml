@@ -17,6 +17,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 </ee:variables>
 		</ee:transform>
 		<salesforce:update doc:name="Update Alter Channel Record in Salesforce" doc:id="40af0dd6-c645-45da-8f6f-7cc2b3b99c76" config-ref="salesforce-config" type="AQB__AQAddress__c" target="varUpdateResponse" targetValue="#[output application/json --- payload]">
+			<reconnect />
 			<salesforce:records ><![CDATA[#[vars.varAddrRecordUpdate]]]></salesforce:records>
 		</salesforce:update>
 		<ee:transform doc:name="DW Salesforce Record Update Staus" doc:id="fdfd19ec-ad9a-45f9-b9b7-e621ff3eb36c">
@@ -65,6 +66,7 @@ output application/json
 </ee:variables>
 		</ee:transform>
 		<salesforce:create doc:name="Create Alternate Channel Record in Salesforce" doc:id="d54fdfb5-20ae-4e67-a986-451867e6daa1" config-ref="salesforce-config" type="AQB__AQAddress__c" target="varCreateResponse" targetValue="#[output application/json --- payload]">
+			<reconnect />
 			<salesforce:records ><![CDATA[#[vars.varAddrRecord]]]></salesforce:records>
 		</salesforce:create>
 		<ee:transform doc:name="DW Salesforce Record Creation Status" doc:id="796dd1f2-b2af-4652-941f-b6e9212df1dd" >

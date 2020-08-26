@@ -22,6 +22,7 @@ payload.degree]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform> 
 		<salesforce:update-single type="AQB__Education__c" doc:name="Update single Education in Salesforce" doc:id="606116fb-70f4-46b2-aa0e-1aa1d870f34d" config-ref="salesforce-config" >
+			<reconnect />
 		</salesforce:update-single>
 		<ee:transform doc:name="DW Grouping of status" doc:id="6fa19f29-8847-4bbf-b216-b81494d77899">
 				<ee:message>
@@ -103,6 +104,7 @@ payload.degree]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<salesforce:create-single doc:name="Create single Education into Salesforce" doc:id="db9b0455-d830-4aa7-b4b2-d9a51e4cd382" config-ref="salesforce-config" type="AQB__Education__c" >
+			<reconnect />
 		</salesforce:create-single>
 		<ee:transform doc:name="DW add incremental sfdc_result to list" doc:id="e1bcb8d8-f0e8-450d-9a96-e162c67583f6">
 				<ee:message>
@@ -146,6 +148,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<salesforce:upsert type="Degree_Details__c" doc:name="Upsert_degree_Details" doc:id="a5775eb7-7621-43ce-ac39-e860538a4f07" config-ref="salesforce-config" externalIdFieldName="Name">
+			<reconnect />
 		</salesforce:upsert>
 		<logger level="INFO" doc:name="LOG INFO End of degree_Details" doc:id="f1efd7eb-6e57-43a0-bb9d-230f5524c45a" message="End of flow for post:Education. Education created with sfdc_ID #[payload.id] " />
 	</sub-flow>
