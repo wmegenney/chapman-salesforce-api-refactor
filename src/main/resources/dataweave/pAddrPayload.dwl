@@ -13,7 +13,6 @@ obj map{
   "STATE_DESCR": $."STATE_DESCR",
   "LAST_UPDT_DTTM": $."LAST_UPDT_DTTM",
   "COUNTRY_CD": $."COUNTRY_CD",
-  "EMPLID": $."EMPLID",
   "COUNTRY_NM": $."COUNTRY_NM",
   "STATE": $."STATE",
   "POSTAL": $."POSTAL",
