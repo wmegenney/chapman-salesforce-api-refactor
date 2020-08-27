@@ -18,7 +18,9 @@ output application/java
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Log Salesforce Request Payload" doc:id="7c556686-1b9a-486b-810e-3fa7f75ada58" message="Account record request : #[payload]" />
-		<salesforce:upsert doc:name="Upsert into Salesforce LL institution object" doc:id="f6830a1a-ace1-453c-94e4-c7cf3fc326b6" config-ref="salesforce-config" externalIdFieldName="#['AQC_Inst_ID__c']" type="#['AQB__LLEducationalInstitution__c']"/>
+		<salesforce:upsert doc:name="Upsert into Salesforce LL institution object" doc:id="f6830a1a-ace1-453c-94e4-c7cf3fc326b6" config-ref="salesforce-config" externalIdFieldName="#['AQC_Inst_ID__c']" type="#['AQB__LLEducationalInstitution__c']">
+			<reconnect />
+		</salesforce:upsert>
 		<ee:transform doc:name="DW Salesforce Response" doc:id="29a871cc-dfa9-4cec-9d9b-35475015f46e" >
 			<ee:message >
 				<ee:set-payload resource="dataweave/pSfExtAccRes.dwl" />

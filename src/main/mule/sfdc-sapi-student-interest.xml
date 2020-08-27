@@ -25,8 +25,12 @@ payload]]></ee:set-payload>
 				<ee:set-payload resource="dataweave/pStuIntReqFinalPayload.dwl" />
 			</ee:message>
 		</ee:transform>
-		<salesforce:create doc:name="Create Student Interest in Salesforce" doc:id="4cf79bc6-cf08-43b1-9530-38dacacfcf08" config-ref="salesforce-config" type="AQB__StudentInterest__c"/>
-		<salesforce:upsert type="AQB__StudentInterest__c" doc:name="Upsert Student Interest into Salesforce" doc:id="e3e35922-ae02-4457-a6c6-9803dc3d8439" config-ref="salesforce-config" externalIdFieldName="Emplid__c__c" />
+		<salesforce:create doc:name="Create Student Interest in Salesforce" doc:id="4cf79bc6-cf08-43b1-9530-38dacacfcf08" config-ref="salesforce-config" type="AQB__StudentInterest__c">
+			<reconnect />
+		</salesforce:create>
+		<salesforce:upsert type="AQB__StudentInterest__c" doc:name="Upsert Student Interest into Salesforce" doc:id="e3e35922-ae02-4457-a6c6-9803dc3d8439" config-ref="salesforce-config" externalIdFieldName="Emplid__c__c" >
+			<reconnect />
+		</salesforce:upsert>
 		<ee:transform doc:name="DW convert response payload into Json" doc:id="220d7774-3da0-4f84-8f4c-d125bd920ce2" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

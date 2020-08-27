@@ -9,6 +9,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 		<logger level="INFO" doc:name="LOG INFO Start of sfdc/query Flow" doc:id="4ac5c75b-45b4-4709-bfb7-96735ca75b48" message="Start of query salesforce flow" />
 		<foreach doc:name="For Each" doc:id="0fdbb0c2-ca4d-48f2-b109-453faa94e427">
 			<salesforce:query doc:name="Query for ContactId" doc:id="2964a49a-c71a-47db-9482-5bd1a221595a" target="contactid" config-ref="salesforce-config">
+				<reconnect />
 				<salesforce:salesforce-query>select Id from Contact where AQB__ContactExternalID__c = ':id'</salesforce:salesforce-query>
 				<salesforce:parameters><![CDATA[#[output application/java
 ---
