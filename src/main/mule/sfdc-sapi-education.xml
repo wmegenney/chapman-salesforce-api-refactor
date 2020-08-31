@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
-	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
-http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="sfdc-sapi-education-update-sub-flow" doc:id="dba60664-e132-4276-a850-c5133f3d73e2" >
 	<logger level="INFO" doc:name="LOG INFO Start of Flow" doc:id="0480ef18-234d-4041-9e96-bd31cdf3c656" message="Flow started for put:Education with payload: #[payload]" />
 		<ee:transform doc:name="DW create payload for update education" doc:id="8cc04ab0-bc5b-4227-802a-946d8cd59935" >
@@ -14,9 +15,15 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
 				<ee:set-payload resource="dataweave/pEduPayload.dwl" />
 			</ee:message>
 			<ee:variables >
+				<ee:set-variable variableName="degree" ><![CDATA[%dw 2.0
+output application/java
+---
+payload.degree]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform> 
-		<salesforce:update-single type="AQB__Education__c" doc:name="Update single Education in Salesforce" doc:id="606116fb-70f4-46b2-aa0e-1aa1d870f34d" config-ref="salesforce-config" />
+		<salesforce:update-single type="AQB__Education__c" doc:name="Update single Education in Salesforce" doc:id="606116fb-70f4-46b2-aa0e-1aa1d870f34d" config-ref="salesforce-config" >
+			<reconnect />
+		</salesforce:update-single>
 		<ee:transform doc:name="DW Grouping of status" doc:id="6fa19f29-8847-4bbf-b216-b81494d77899">
 				<ee:message>
 				</ee:message>
@@ -24,7 +31,8 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
 				<ee:set-variable resource="dataweave/vEduStatus.dwl" variableName="status" />
 				</ee:variables>
 			</ee:transform>
-		<logger level="INFO" doc:name="LOG INFO End of Flow" doc:id="70724272-883c-4a7a-adc1-605dee3cd032" message="End of Flow for Record update for Education id: #[payload.id]" />
+		<logger level="INFO" doc:name="LOG INFO End of Education" doc:id="c73d357b-b98c-48fc-be21-14ae843ce988" message="End of Flow for Record update for Education id: #[payload.id]" />
+		<flow-ref doc:name="sfdc-sapi-degreeDetails_common_Flow" doc:id="9dbdfad3-1bed-4838-9242-0afa316180f0" name="sfdc-sapi-degreeDetails_common_Flow"/>
     
 	</sub-flow>
 	<sub-flow name="sfdc-sapi-education-flow" doc:id="1f5c30ec-97e5-42d1-b18f-9d613acb7a78" >
@@ -51,12 +59,13 @@ CreatedById,
 CreatedDate,
 LastModifiedById,
 LastModifiedDate
- FROM AQB__Education__c where AQB__Contact__c = ':emplId' AND AQB__DegreeLevel__c = ':degLevel'</salesforce:salesforce-query>
+ FROM AQB__Education__c where AQB__Contact__c = ':emplId' AND AQB__DegreeLevel__c = ':degLevel' AND AQB__FirstYearofAttendance__c=':startYear'</salesforce:salesforce-query>
 			<salesforce:parameters><![CDATA[#[output application/java
 ---
 {
 	"emplId" : payload.AQB__Contact__c,
-	"degLevel" : payload.AQB__DegreeLevel__c
+	"degLevel" : payload.AQB__DegreeLevel__c,
+	"startYear" : payload.AQB__FirstYearofAttendance__c
 }]]]></salesforce:parameters>
 		</salesforce:query>
 			<choice doc:name="Choice to check update or create" doc:id="15551eef-678b-4aa6-89e5-770e167d6465">
@@ -73,7 +82,7 @@ LastModifiedDate
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-vars.status]]></ee:set-payload>
+vars.status ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="LOG INFO End of Flow" doc:id="bba2ebc8-1edb-41b4-86df-ff0e03c5559b" message="End of update or create education details flow"/>
@@ -85,10 +94,18 @@ vars.status]]></ee:set-payload>
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-payload ]]></ee:set-payload>
+payload - "degree" ]]></ee:set-payload>
 			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="degree" ><![CDATA[%dw 2.0
+output application/java
+---
+payload.degree]]></ee:set-variable>
+			</ee:variables>
 		</ee:transform>
-		<salesforce:create-single doc:name="Create single Education into Salesforce" doc:id="db9b0455-d830-4aa7-b4b2-d9a51e4cd382" config-ref="salesforce-config" type="AQB__Education__c" />
+		<salesforce:create-single doc:name="Create single Education into Salesforce" doc:id="db9b0455-d830-4aa7-b4b2-d9a51e4cd382" config-ref="salesforce-config" type="AQB__Education__c" >
+			<reconnect />
+		</salesforce:create-single>
 		<ee:transform doc:name="DW add incremental sfdc_result to list" doc:id="e1bcb8d8-f0e8-450d-9a96-e162c67583f6">
 				<ee:message>
 				</ee:message>
@@ -96,7 +113,43 @@ payload ]]></ee:set-payload>
 				<ee:set-variable resource="dataweave/vCreateEduStatus.dwl" variableName="status" />
 				</ee:variables>
 			</ee:transform>
-		<logger level="INFO" doc:name="LOG INFO End of Flow" doc:id="f1efd7eb-6e57-43a0-bb9d-230f5524c45a" message="End of flow for post:Education. Education created with sfdc_ID #[payload.id] "/>
+		<logger level="INFO" doc:name="LOG INFO End of Education" doc:id="e165365f-101c-425c-840d-b7435dff1e50" message="End of flow for post:Education. Education created with sfdc_ID #[payload.id] " />
+		<flow-ref doc:name="sfdc-sapi-degreeDetails_common_Flow" doc:id="a97a4074-4f16-4533-9b28-82a1a670ef6f" name="sfdc-sapi-degreeDetails_common_Flow"/>
 	
 </sub-flow>
+	<sub-flow name="sfdc-sapi-degreeDetails_common_Flow" doc:id="6e5bb444-584f-43c6-a166-221f6b0a2ff3">
+		<salesforce:query doc:name="Query_Name" doc:id="9396e240-7715-46db-abf9-3e469353ec04" config-ref="salesforce-config">
+			<salesforce:salesforce-query >SELECT Name FROM AQB__Education__c WHERE Id = ':id'</salesforce:salesforce-query>
+			<salesforce:parameters ><![CDATA[#[output application/java
+---
+{
+	"id" : payload.id
+}]]]></salesforce:parameters>
+		</salesforce:query>
+		<ee:transform doc:name="Payload for Degree Details" doc:id="8ef1d121-e76e-47d3-a7f9-89f029f5910a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[{
+      "Education_Detail__r": {
+			"Name": payload[0].Name,
+			"type": "AQB__Education__c"			
+      },
+      "Name": payload[0].Name,
+      "Type__c": vars.degree."Type__c",
+  	  "Status__c": vars.degree."Status__c",
+      "Department__c": vars.degree."Department__c",
+      "School__c": vars.degree."School__c",
+      "Status_Date__c": vars.degree."Status_Date__c",
+      "Major_Minor__c": vars.degree."Major_Minor__c",
+      "Emphasis_Specialization_Track__c": vars.degree."Emphasis_Specialization_Track__c"
+    }]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:upsert type="Degree_Details__c" doc:name="Upsert_degree_Details" doc:id="a5775eb7-7621-43ce-ac39-e860538a4f07" config-ref="salesforce-config" externalIdFieldName="Name">
+			<reconnect />
+		</salesforce:upsert>
+		<logger level="INFO" doc:name="LOG INFO End of degree_Details" doc:id="f1efd7eb-6e57-43a0-bb9d-230f5524c45a" message="End of flow for post:Education. Education created with sfdc_ID #[payload.id] " />
+	</sub-flow>
 </mule>

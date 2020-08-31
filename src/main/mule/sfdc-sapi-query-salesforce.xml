@@ -9,6 +9,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 		<logger level="INFO" doc:name="LOG INFO Start of sfdc/query Flow" doc:id="4ac5c75b-45b4-4709-bfb7-96735ca75b48" message="Start of query salesforce flow" />
 		<foreach doc:name="For Each" doc:id="0fdbb0c2-ca4d-48f2-b109-453faa94e427">
 			<salesforce:query doc:name="Query for ContactId" doc:id="2964a49a-c71a-47db-9482-5bd1a221595a" target="contactid" config-ref="salesforce-config">
+				<reconnect />
 				<salesforce:salesforce-query>select Id from Contact where AQB__ContactExternalID__c = ':id'</salesforce:salesforce-query>
 				<salesforce:parameters><![CDATA[#[output application/java
 ---
@@ -16,14 +17,6 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 	"id" : "00" ++ payload.EMPLID
 }]]]></salesforce:parameters>
 			</salesforce:query>
-			<salesforce:query doc:name="Query PrimaryDegree" doc:id="8994d9c2-a11d-4515-b131-36c863ad04b0" config-ref="salesforce-config" target="degree">
-			<salesforce:salesforce-query>SELECT AQB__IsPrimaryDegree__c FROM AQB__Education__c WHERE AQB__Contact__c = ':id'</salesforce:salesforce-query>
-			<salesforce:parameters><![CDATA[#[output application/java
----
-{
-	"id" : vars.contactid[0].Id
-}]]]></salesforce:parameters>
-		</salesforce:query>
 			<ee:transform doc:name="EmpId value mapping" doc:id="bc6d03f4-87e0-4aca-bf18-27b5516f4b3e">
 			<ee:message>
 			</ee:message>
@@ -31,7 +24,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 					<ee:set-variable variableName="CSdata" ><![CDATA[%dw 2.0
 output application/json
 ---
-(vars.CSdata default []) + ({"empid":payload.EMPLID} ++  payload mapObject (if(($$) ~= "EMPLID") (($$): vars.contactid[0].Id) else if(($$) ~= "XC_AQ_PRI_DEG") (if(sizeOf(vars.degree) > 0) (($$):"yes") else (($$):"no")) else ($$): $))]]></ee:set-variable>
+(vars.CSdata default []) + (payload ++ {"empid":payload.EMPLID,"EMPLID": vars.contactid[0].Id}) ]]></ee:set-variable>
 				</ee:variables>
 		
 </ee:transform>

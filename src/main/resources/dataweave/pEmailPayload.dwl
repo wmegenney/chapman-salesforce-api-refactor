@@ -1,14 +1,15 @@
 %dw 2.0
+import * from dw::core::Strings
 output application/json
 var obj=[payload]
 ---
 obj map{
   
   
-    "EMPLID": $."EMPLID",
+    "EMPLID":leftPad($."EMPLID", 9, "0"),
     "EMAIL_ADDR": $."EMAIL_ADDR",
-    "PREF_EMAIL_FLAG": $."PREF_EMAIL_FLAG",
-    "ADDRESS_TYPE": $."E_ADDR_TYPE"
+    "ADDRESS_TYPE": $."SCC_EMAILTYP_DESC",
+    "STATUS": $."XC_AQ_STATUS"
 
 
 }

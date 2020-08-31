@@ -7,20 +7,14 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="sfdc-sapi-employment-flow" doc:id="ec944b69-f99d-4ec1-a78a-fc1a3a753df9" >
 		<logger level="INFO" doc:name="LOG INFO Start of Flow" doc:id="39e1ee59-6810-4916-bb0e-d4645e119c99" message="Start of flow to upsert employments into Saleforce"/>
-		<ee:transform doc:name="DW create payload for upsert" doc:id="6b682a1a-928b-47f2-a7e4-864bec750541" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
----
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
 		<ee:transform doc:name="DW create employment request" doc:id="286796c1-c945-4aaa-8c72-c088c53a027c">
 			<ee:message>
 				<ee:set-payload resource="dataweave/pUpsertEmplPayload.dwl" />
 			</ee:message>
 		</ee:transform>
-		<salesforce:upsert type="AQB__Employment__c" doc:name="Upsert Employments into Salesforce" doc:id="44968d27-38cb-4d54-a5ef-4a7a78e0f55d" config-ref="salesforce-config" externalIdFieldName="AQB__EmploymentExternalID__c" />
+		<salesforce:upsert type="AQB__Employment__c" doc:name="Upsert Employments into Salesforce" doc:id="44968d27-38cb-4d54-a5ef-4a7a78e0f55d" config-ref="salesforce-config" externalIdFieldName="AQB__EmploymentExternalID__c" >
+			<reconnect />
+		</salesforce:upsert>
 		<ee:transform doc:name="DW transform response into Json'" doc:id="ca537211-a876-4c14-ab4d-285e91fe4dcc" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

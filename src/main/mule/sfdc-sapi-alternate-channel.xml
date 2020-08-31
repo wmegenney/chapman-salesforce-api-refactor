@@ -17,6 +17,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 </ee:variables>
 		</ee:transform>
 		<salesforce:update doc:name="Update Alter Channel Record in Salesforce" doc:id="40af0dd6-c645-45da-8f6f-7cc2b3b99c76" config-ref="salesforce-config" type="AQB__AQAddress__c" target="varUpdateResponse" targetValue="#[output application/json --- payload]">
+			<reconnect />
 			<salesforce:records ><![CDATA[#[vars.varAddrRecordUpdate]]]></salesforce:records>
 		</salesforce:update>
 		<ee:transform doc:name="DW Salesforce Record Update Staus" doc:id="fdfd19ec-ad9a-45f9-b9b7-e621ff3eb36c">
@@ -65,6 +66,7 @@ output application/json
 </ee:variables>
 		</ee:transform>
 		<salesforce:create doc:name="Create Alternate Channel Record in Salesforce" doc:id="d54fdfb5-20ae-4e67-a986-451867e6daa1" config-ref="salesforce-config" type="AQB__AQAddress__c" target="varCreateResponse" targetValue="#[output application/json --- payload]">
+			<reconnect />
 			<salesforce:records ><![CDATA[#[vars.varAddrRecord]]]></salesforce:records>
 		</salesforce:create>
 		<ee:transform doc:name="DW Salesforce Record Creation Status" doc:id="796dd1f2-b2af-4652-941f-b6e9212df1dd" >
@@ -129,18 +131,18 @@ payload]]></ee:set-payload>
 				</ee:transform>
 			</otherwise>
 		</choice>
-		<salesforce:query doc:name="Query Salesforce for Record Type" doc:id="08aa80c2-b42d-4b1a-9126-dc4475b5cbc2" config-ref="salesforce-config" target="varRecordTypeId" targetValue="#[output application/json --- payload]">
+		<!-- <salesforce:query doc:name="Query Salesforce for Record Type" doc:id="08aa80c2-b42d-4b1a-9126-dc4475b5cbc2" config-ref="salesforce-config" target="varRecordTypeId" targetValue="#[output application/json -&#45;&#45; payload]">
 			<salesforce:salesforce-query >SELECT Id,Name FROM RecordType WHERE Name = ':RecordType'</salesforce:salesforce-query>
 			<salesforce:parameters ><![CDATA[#[output application/java
----
+-&#45;&#45;
 {
 	RecordType : attributes.queryParams.ViewName
 }]]]></salesforce:parameters>
 		</salesforce:query>
-		<set-variable value='#[vars.varRecordTypeId."Id"[0] default ""]' doc:name="Set Variable Record Type" doc:id="28e7e7df-2e7d-4f76-b0c6-81f531d72e98" variableName="RecordType"/>
+		<set-variable value='#[vars.varRecordTypeId."Id"[0] default ""]' doc:name="Set Variable Record Type" doc:id="28e7e7df-2e7d-4f76-b0c6-81f531d72e98" variableName="RecordType"/> -->
 		<salesforce:query doc:name="Query Salesforce for Alternate Channel" doc:id="e47d6fdb-1905-425e-9d29-70dafbc268c0" config-ref="salesforce-config" target="varGetAddressRecords">
-				<salesforce:salesforce-query>SELECT AQB__AccountExternalIDLinkField__c,AQB__Type__c,Id FROM AQB__AQAddress__c
- WHERE AQB__AccountExternalIDLinkField__c = ':EMPID' AND AQB__Type__c = ':ADDRTYPE'</salesforce:salesforce-query>
+				<salesforce:salesforce-query>SELECT AQB__ContactExternalIDLinkField__c,AQB__Type__c,Id FROM AQB__AQAddress__c
+ WHERE AQB__ContactExternalIDLinkField__c = ':EMPID' AND AQB__Type__c = ':ADDRTYPE'</salesforce:salesforce-query>
 				<salesforce:parameters><![CDATA[#[output application/java
 ---
 {
