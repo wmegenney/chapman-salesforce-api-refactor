@@ -1,37 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<sub-flow name="sfdc-sapi-student-interest-flow" doc:id="174781ad-9e07-40db-9085-e071acba0d6e" >
 		<logger level="INFO" doc:name="LOG INFO Start of Flow" doc:id="c3859b41-48f9-4649-b09d-a48434fbc624" message="Start of Student Interest sync flow" />
-		<ee:transform doc:name="DW convert payload into Java" doc:id="dfe46724-c10f-4a38-864f-22105d900cfa" >
+		<ee:transform doc:name="DW Set SOQL Query" doc:id="0508569f-e641-4998-8bad-45c5cdf73412" >
 			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="vSOQLQuery" ><![CDATA[%dw 2.0
+output application/json
+import * from dw::core::Strings
+---
+"SELECT AQB__ContactExternalID__c,Id,(SELECT Id FROM AQB__Education__r where AQB__IsPrimaryDegree__c = 'YES' ) FROM Contact WHERE AQB__ContactExternalID__c IN " ++ substringBeforeLast(("(" ++ (payload.EMPLID distinctBy ((item, index) -> item) reduce ((item, accumulator='') -> accumulator ++ '\'' ++ leftPad(item,9,'0') ++ '\'' ++ ',' ))),',') ++ ")"]]></ee:set-variable>
+				<ee:set-variable variableName="vUniqueEmpIds" ><![CDATA[%dw 2.0
+output application/json
+import * from dw::core::Objects
+---
+keySet(payload groupBy $.EMPLID)]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<salesforce:query doc:name="Query Education Id Using EmplId " doc:id="e417b641-7545-41d0-b2c8-ae3ef77e4e71" config-ref="salesforce-config" target="vEducationData" targetValue="#[output application/json --- payload]">
+			<salesforce:salesforce-query>#[vars.vSOQLQuery]</salesforce:salesforce-query>
+		</salesforce:query>
+		<foreach doc:name="For Each" doc:id="e2b5bdd8-ff9b-46b3-95f3-f4156e01911a" collection='#[vars.vUniqueEmpIds]'>
+			<ee:transform doc:name="DW create student interest request" doc:id="33f45254-9a50-452d-93b8-acb949f3b94a">
+			<ee:message>
+			</ee:message>
+				<ee:variables >
+					<ee:set-variable resource="dataweave/pStuIntPayload.dwl" variableName="vStdInterestRequest" />
+				</ee:variables>
+		</ee:transform>
+			<ee:transform doc:name="DW Create Student Interest Existance Check Query" doc:id="e2e24630-beff-4d99-baed-6a3757720e23">
+			<ee:message>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="vCheckStdInterestTypeQuery"><![CDATA[%dw 2.0
+output text/plain
+---
+"SELECT aqc_externalid__c FROM AQB__LLStudentInterestType__c Where Id IN (Select AQB__InterestType__c FROM AQB__StudentInterest__c WHERE AQB__EducationLink__c = " ++ "'" ++ vars.vStdInterestRequest.AQB__EducationLink__c[0] default null ++ "'" ++ ")" ]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+			<salesforce:query doc:name="Query Student Interest To Check If Interest Is Present" doc:id="30052933-ab4e-45c8-ba66-ccd81bef956f" config-ref="salesforce-config" target="vStdInterestExitsData" targetValue="#[output application/json --- payload]">
+			<salesforce:salesforce-query>#[vars.vCheckStdInterestTypeQuery]</salesforce:salesforce-query>
+		</salesforce:query>
+			<choice doc:name="Choice" doc:id="f0117521-e93a-401f-810b-bc9fa9b308ba" >
+				<when expression="#[sizeOf((vars.vStdInterestRequest filter !(vars.vStdInterestExitsData.aqc_externalid__c contains $.AQB__InterestType__r.aqc_externalid__c))) &gt; 0]">
+					<salesforce:create doc:name="Create Student Interest in Salesforce" doc:id="4cf79bc6-cf08-43b1-9530-38dacacfcf08" config-ref="salesforce-config" type="AQB__StudentInterest__c" >
+						<salesforce:records ><![CDATA[#[output application/java 
+---
+vars.vStdInterestRequest filter !(vars.vStdInterestExitsData.Id contains $.AQB__InterestType__r.aqc_externalid__c )]]]></salesforce:records>
+					</salesforce:create>
+					<ee:transform doc:name="DW convert response payload into Json" doc:id="220d7774-3da0-4f84-8f4c-d125bd920ce2">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
 ---
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<ee:transform doc:name="DW create student interest request" doc:id="33f45254-9a50-452d-93b8-acb949f3b94a">
-			<ee:message>
-				<ee:set-payload resource="dataweave/pStuIntPayload.dwl" />
-			</ee:message>
-		</ee:transform>
-		<ee:transform doc:name="DW create request payload" doc:id="fdeef10d-f635-4759-ba57-33448e603408" >
+					<ee:transform doc:name="DW Set Payload" doc:id="13bf063f-edee-4a6a-aa93-51374d3b7f32" >
+						<ee:message >
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="vSFResponse" ><![CDATA[%dw 2.0
+output application/json
+---
+payload + (vars.vStdInterestRequest filter (vars.vStdInterestExitsData.aqc_externalid__c contains $.AQB__InterestType__r.aqc_externalid__c) default [] map() ->{
+	 
+    "success": false,
+    "id": null,
+    "errors": [
+     { "message" : 
+     	["Student Interest Type Already Exists For Student"]
+     }
+    ]
+ })]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				</when>
+				<otherwise >
+					<logger level="INFO" doc:name="LOG INFO" doc:id="3ef8e096-7fc3-482e-9a58-ba040909f32b" message="Student Interest Already Exits for EMPID " />
+					<ee:transform doc:name="DW Set Payload" doc:id="51d0f828-08e6-4f76-b449-f9f8899101b6" >
+						<ee:message >
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="vSFResponse" ><![CDATA[%dw 2.0
+output application/json
+---
+(vars.vStdInterestRequest map() ->{
+	 
+    "success": false,
+    "id": null,
+    "errors": [
+     { "message" : 
+     	["Student Interest Type Already Exists For Student"]
+     }
+    ]
+ })]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				</otherwise>
+			</choice>
+		</foreach>
+		<set-payload value="#[flatten(vars.vSFResponse)]" doc:name="Set Payload To vSFResponse" doc:id="7ae6d5c3-6c18-42e9-9486-cb28deba3fa3" />
+		<logger level="INFO" doc:name="LOG INFO End of Flow" doc:id="7c2205c3-f5ae-4dac-aa4c-b04a5d347c9d" message="End of Student Interest sync flow" />
+	</sub-flow>
+	<sub-flow name="sf-upsert-studentIntrest-type-in-salesforce" doc:id="e6cffb2f-a816-4f41-9dac-78f168995eaf" >
+		<logger level="INFO" doc:name="LOG INFO Start" doc:id="a4dd16a5-3936-4712-ac3f-c38ad959003d" message="Starting Student Interest Type Upsert"/>
+		<ee:transform doc:name="DW Create Student Interest Type Payload" doc:id="f945e4fb-3489-4b02-8907-c54d3991b5b9" >
 			<ee:message >
-				<ee:set-payload resource="dataweave/pStuIntReqFinalPayload.dwl" />
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+//var interestGroupPickList = Mule::p('studentInterest.interest.group.mapping')
+//fun interestPickListFunc( pickListString : String ,item : String) = ((((pickListString splitBy  ",") filter ($ splitBy ":")[0] == item)[0]) splitBy  ":")[1]
+---
+payload map() ->{
+	
+	"aqc_externalid__c" :  $.DESCR_STDNT_GROUP ++" "++ $.DESCR_GROUP_TYPE,
+	"AQB__InterestGroup__c" :  $.DESCR_STDNT_GROUP,
+	"Name" : $.DESCR_GROUP_TYPE
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<salesforce:create doc:name="Create Student Interest in Salesforce" doc:id="4cf79bc6-cf08-43b1-9530-38dacacfcf08" config-ref="salesforce-config" type="AQB__StudentInterest__c">
-			<reconnect />
-		</salesforce:create>
-		<salesforce:upsert type="AQB__StudentInterest__c" doc:name="Upsert Student Interest into Salesforce" doc:id="e3e35922-ae02-4457-a6c6-9803dc3d8439" config-ref="salesforce-config" externalIdFieldName="Emplid__c__c" >
-			<reconnect />
-		</salesforce:upsert>
-		<ee:transform doc:name="DW convert response payload into Json" doc:id="220d7774-3da0-4f84-8f4c-d125bd920ce2" >
+		<salesforce:upsert doc:name="Upsert Student Interest Into AQB__LLStudentInterestType__c" doc:id="6d15d9c5-961d-4f28-b5f3-7fa6e45bfb88" config-ref="salesforce-config" externalIdFieldName="aqc_externalid__c" type="AQB__LLStudentInterestType__c"/>
+		<ee:transform doc:name="DW Java To JSON" doc:id="09f1aa5b-e7d8-4185-92c5-c5aa599f4a0e" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -39,6 +136,6 @@ output application/json
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="LOG INFO End of Flow" doc:id="7c2205c3-f5ae-4dac-aa4c-b04a5d347c9d" message="End of Student Interest sync flow" />
+		<logger level="INFO" doc:name="LOG INFO End" doc:id="8b14820a-f2a0-49ad-ae28-b9ee819e7240" message="Student Interest Type Upsert Completed Successfully"/>
 	</sub-flow>
 </mule>
