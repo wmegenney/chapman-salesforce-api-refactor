@@ -1,4 +1,5 @@
 %dw 2.0
+import * from dw::core::Strings
 output application/java
 fun status
 (status) =
@@ -20,14 +21,14 @@ fun startedOrEnded
 ---
 payload map (value, index) -> {
 	"AQB__ContactId__r": {
-		"AQB__ContactExternalID__c": value.EMPLID,
+		"AQB__ContactExternalID__c": leftPad(value.EMPLID,9,"0"),
 		"type": 'Contact'
 	},
 	"AQB__LinkedEmployer__r": {
-		"AQB__AccountExternalID__c": value.EMPLID,
+		"AQB__AccountExternalID__c": leftPad(value.EMPLID,9,"0"),
 		"type": 'Account'
 	},
-	"AQB__EmploymentExternalID__c": value.EMPLID,
+	"AQB__EmploymentExternalID__c": leftPad(value.EMPLID,9,"0"),
 	"AQB__EndDate__c": value.END_DT as LocalDateTime {format: "yyyy-MM-dd'T'HH:mm:ss"} default '',
 	"AQB__Ended__c": startedOrEnded(lower(value.XC_AQ_ENDED)),
 	"AQB__StartDate__c": value.START_DT as LocalDateTime {format: "yyyy-MM-dd'T'HH:mm:ss"} default '',
