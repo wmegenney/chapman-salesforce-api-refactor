@@ -34,7 +34,36 @@ output application/java
 				<ee:set-payload><![CDATA[%dw 2.0
 output application/java
 ---
-payload]]></ee:set-payload>
+payload map (value, index) -> {
+	
+	"AQB__ContactExternalID__c": value.AQB__ContactExternalID__c,
+	"Salutation" : value.Salutation,	
+	"FirstName": value.FirstName,
+	"LastName" : value.LastName,
+	"Suffix": value.Suffix,
+	"MiddleName": value.MiddleName,
+	"AQB__MaidenName__c" : value.AQB__MaidenName__c,
+	"AQB__Nickname__c": value.AQB__Nickname__c,
+	"AQB__CAECategory__c" : value.AQB__CAECategory__c,
+	"AQB__Type__c": value.AQB__Type__c,
+	"AQB__SecondaryType__c":value.AQB__SecondaryType__c,	
+	"AQB__AddressInUseType__c" : value.AQB__AddressInUseType__c,
+	"AQB__PersonalEmail__c" : value.AQB__PersonalEmail__c,
+    "AQB__BusinessEmail__c" : value.AQB__BusinessEmail__c,
+    "AQB__SchoolEmail__c" : value.AQB__SchoolEmail__c,
+    "AQB__OtherEmail__c": value.AQB__OtherEmail__c,
+	"AQB__EmailPreference__c": value.AQB__EmailPreference__c,
+	"MobilePhone": value.MobilePhone,
+	"OtherPhone": value.OtherPhone,
+	"AQB__PhonePreference__c":value.AQB__PhonePreference__c,
+	"AQB__Gender__c": value.AQB__Gender__c,
+	"AQB__MaritalStatus__c" : value.AQB__MaritalStatus__c,
+	"AQB__PlaceofBirth__c": value.AQB__PlaceofBirth__c,
+	"Birthdate" : value.Birthdate as LocalDateTime {format: "yyyy-MM-dd'T'HH:mm:ss"} default '',
+	"AQB__Ethnicity__c":value.AQB__Ethnicity__c,
+	"AQB__PrimaryGiftRecognitionCredit_Percent__c": value.AQB__PrimaryGiftRecognitionCredit_Percent__c,
+	"AQB__SecondaryGiftRecognitionCreditPercent__c":value.AQB__SecondaryGiftRecognitionCreditPercent__c,
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="LOG INFO SF Payload" doc:id="a4e0ccb3-ee6b-443a-826b-3eae8c94a47e" message="SF Contacts request payload : #[output application/json --- payload]"/>
