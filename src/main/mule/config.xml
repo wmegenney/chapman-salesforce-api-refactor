@@ -18,7 +18,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 		</apikit:flow-mappings>
 	</apikit:config>
 	 <salesforce:sfdc-config name="salesforce-config" doc:name="Salesforce Config" doc:id="e98a7939-18de-48b5-af74-cc5b5009f8da" >
-		<salesforce:basic-connection username="${secure::system.salesforce.user}" password="${secure::system.salesforce.password}" url="${secure::system.salesforce.authorizationUrl}" />
+		<salesforce:basic-connection username="${secure::system.salesforce.user}" password="${secure::system.salesforce.password}" url="${secure::system.salesforce.authorizationUrl}" securityToken="YfHX5qMWpXXtXbNhxp3tSrMK"/>
 	</salesforce:sfdc-config> 
 	<configuration-properties doc:name="Configuration properties" doc:id="dc55d147-7d58-4d8e-b71c-53e27877f80d" file="properties\application-properties.yaml" />
 	<global-property doc:name="Global Property" doc:id="62431ff1-752d-4721-a93e-941ee02d7e33" name="mule.env" value="loc" />
