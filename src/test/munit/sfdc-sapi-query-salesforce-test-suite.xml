@@ -24,7 +24,7 @@
 				<munit:attributes value="#[{headers:{
 query:&quot;select Id from Contact where AQB__ContactExternalID__c ='0916425'&quot;}}]" mediaType="application/java" />
 			</munit:set-event>
-			<flow-ref doc:name="Flow-ref to get:\sfdc\query:sfdc-api-config" doc:id="4dbb8275-232e-4382-9899-2ce266c826c3" name="get:\sfdc\query:sfdc-api-config"/>
+			<flow-ref doc:name="Flow-ref to get:\sfdc\query:sfdc-api-config" doc:id="4dbb8275-232e-4382-9899-2ce266c826c3" name="post:\sfdc\query:sfdc-api-config"/>
 		</munit:execution>
 		<munit:validation >
 			<munit-tools:assert-that doc:name="Assert that" doc:id="5df54c3d-ffde-4e25-bd52-38e46b2dfe5c" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
