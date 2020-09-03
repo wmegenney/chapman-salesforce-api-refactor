@@ -1,26 +1,14 @@
 %dw 2.0
-output application/java
+output application/json
+import * from dw::core::Strings
 ---
-payload map(value, index) ->{
-		//"AQB__Contactid__c" : "HYPERLINK( AQB__EducationId__r.AQB__ContactId__c , AQB__EducationId__r.AQB__ContactId__r.FirstName + ' ' + AQB__EducationId__r.AQB__ContactId__r.LastName , '_self')",
-		/*"AQB__EducationLink__r": {
-			"AQB__Contact__r": {
-			AQB__ContactExternalID__c: "0000013", //value.EMPLID ,
-			"type": 'Contact'
+vars.rootMessage.payload filter ($.EMPLID == vars.vUniqueEmpIds[vars.counter - 1]) map(value, index) ->{
+	
+	    "AQB__EducationLink__c": (vars.vEducationData filter $.AQB__ContactExternalID__c == leftPad(value.EMPLID,9,'0'))[0].AQB__Education__r[0].Id,
+		"AQB__InterestType__r":  {
+			"aqc_externalid__c" : value.DESCR_STDNT_GROUP ++ " " ++ value.DESCR_GROUP_TYPE,
+			"type": "AQB__LLStudentInterestType__c"
 			},
-			"type": "AQB__Education__c"
-		},*/
-		
-		"AQB__EducationLink__r": {
-			Name: value.XC_AQ_DEG_LVL,
-			"type" : 'AQB__EducationLink__c'
-			
-		},
-		"AQB__EducationalInstitution__c" : "Chapman University" ,
-		"AQB__InterestType__c": {
-			Name: value.DESCR_GROUP_TYPE,
-			"type": 'AQB__LLStudentInterestType__c'
-			}, //
 		"AQB__Position__c": value.DESCR_POSITION,
 		"AQB__StartDay__c": value.START_DT_DAY as String,
 		"AQB__StartMonth__c": value.START_DT_MONTH as String,
@@ -28,4 +16,4 @@ payload map(value, index) ->{
 		"AQB__StopDay__c": value.END_DT_DAY as String,
 		"AQB__StopMonth__c": value.END_DT_MONTH as String,
 		"AQB__StopYear__c": value.END_DT_YEAR as String
-}
+} 

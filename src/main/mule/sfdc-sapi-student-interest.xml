@@ -72,7 +72,7 @@ output application/json
 ---
 payload + (vars.vStdInterestRequest filter (vars.vStdInterestExitsData.aqc_externalid__c contains $.AQB__InterestType__r.aqc_externalid__c) default [] map() ->{
 	 
-    "success": false,
+    "success": true,
     "id": null,
     "errors": [
      { "message" : 
@@ -94,7 +94,7 @@ output application/json
 ---
 (vars.vStdInterestRequest map() ->{
 	 
-    "success": false,
+    "success": true,
     "id": null,
     "errors": [
      { "message" : 

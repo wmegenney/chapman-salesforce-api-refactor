@@ -148,4 +148,7 @@ output application/json
 	<flow name="post:\sfdc\query:sfdc-api-config" doc:id="7ceedf8e-4b6f-415f-87ee-6c19310972af" >
 		<flow-ref doc:name="Flow Ref to sfdc-sapi-query-salesforce-flow" doc:id="301332cb-be74-4877-b97b-2f6c8876faa3" name="sfdc-sapi-query-salesforce-flow"/>
 	</flow>
+	<flow name="post:\sfdc\student-interest-type:application\json:sfdc-api-config" doc:id="b58c9dbd-c0d7-461f-b9a4-76a199564ff2" >
+		<flow-ref doc:name="Flow Reference To sf-upsert-studentIntrest-type-in-salesforce" doc:id="bdcfacbe-4664-4eeb-9d66-9ee86e8ab715" name="sf-upsert-studentIntrest-type-in-salesforce"/>
+	</flow>
     </mule>
