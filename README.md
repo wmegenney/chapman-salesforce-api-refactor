@@ -1,3 +1,3 @@
 # chapman-salesforce-api-refactor
 
-key=sapi#ChapmanUniv
+key=CU@key
