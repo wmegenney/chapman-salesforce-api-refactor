@@ -16,8 +16,11 @@ http:
 
 system:
   salesforce:
-    user: "integrationuser@chapman.edu.aqchconv"
-    #password: "![X66vcQameIBFbFXAy83vdw==]"
-    password: "Chapman@123"
-    authorizationUrl: "https://chapman--aqchconv.my.salesforce.com/services/Soap/u/46.0"
-    token: "YfHX5qMWpXXtXbNhxp3tSrMK"
+    user: "![qnYn2HtGfHmG1hurcBeK1P21ElSQB5+zZVSD1LwbgpAmWD+cZQ2rYA==]"
+    #user: "integrationuser@chapman.edu.aqchconv"
+    password: "![vR13aNtfeIkudoXVZ265vA==]"
+    #password: "Chapman@123"
+    #authorizationUrl: "https://chapman--aqchconv.my.salesforce.com/services/Soap/u/46.0"
+    authorizationUrl: "![yH+lsMZ08Cjk1m2sYyBu+xLp3txo40LO3Yo2NhcWSC/Ur8kCbWklt3NKuV/REy7yGXrG9DSmd6lfXf4sH3XuDsyoIT5gUemE]"
+    #token: "YfHX5qMWpXXtXbNhxp3tSrMK"
+    token: "![+u40fBXqGYQLhGC5xh6zSJLiOltDGeCKjpfczCmWsrU=]"
