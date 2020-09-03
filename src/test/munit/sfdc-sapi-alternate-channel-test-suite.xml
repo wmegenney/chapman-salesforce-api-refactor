@@ -96,14 +96,12 @@
 		</munit:behavior>
 		<munit:execution >
 			<munit:set-event doc:name="Set Event" doc:id="5e1fffe2-f9db-4b47-85b8-cab443f43c9c" >
-				<munit:payload value='#[[{
+				<munit:payload value='#[{
 "EMPLID":"0000002",
-"COUNTRY_CODE":"",
-"PHONE_TYPE":"HOME",
-"EXTENSION":"",
+"SCC_PHONETYP_DESC":"HOME",
 "PHONE":"714/493-9189",
-"PREF_PHONE_FLAG":"Y"
-}]]' mediaType="application/java" />
+"XC_AQ_STATUS":"Y"
+}]' mediaType="application/java" />
 				<munit:attributes value='#[{queryParams:
 {ViewName: "phone"}}]' mediaType="application/java" />
 			

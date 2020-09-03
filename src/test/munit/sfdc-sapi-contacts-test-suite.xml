@@ -24,7 +24,7 @@
 		</munit:behavior>
 		<munit:execution >
 			<munit:set-event doc:name="Set Event" doc:id="849a6bed-398c-4566-a9f7-9bb3f1915f25" >
-				<munit:payload value="#[{
+				<munit:payload value="#[[{
 	
 	&quot;AQB__ContactExternalID__c&quot;:&quot;3232655&quot;,
 	&quot;FirstName&quot;:&quot;Max&quot;,
@@ -57,7 +57,7 @@
 	&quot;AQB__Type__c&quot;:&quot;Friend&quot;,
 	&quot;AQB__SecondaryType__c&quot;:&quot;Parent&quot;
 
-}]" mediaType="application/java" />
+}]]" mediaType="application/java" />
 			</munit:set-event>
 			<flow-ref doc:name="Flow-ref to post:\sfdc\contacts:application\json:sfdc-api-config" doc:id="e7acc92b-8218-489b-b176-8328cf1bbc6f" name="post:\sfdc\contacts:application\json:sfdc-api-config"/>
 		</munit:execution>

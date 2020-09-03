@@ -8,7 +8,7 @@
 		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
 	<munit:config name="sfdc-sapi-education-test-suite.xml" />
-	<munit:test name="sfdc-sapi-education-test-suite-sfdc-sapi-education-flowUpdateTest" doc:id="c940c808-6c93-4a58-b298-00a6fe80b807" description="Test">
+	<munit:test name="sfdc-sapi-education-test-suite-sfdc-sapi-education-flowUpdateTest" doc:id="c940c808-6c93-4a58-b298-00a6fe80b807" description="Test" ignore="true">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock when sf query for records" doc:id="cb7b9256-7919-486e-89d9-57696cee6f7d" processor="salesforce:query">
 				<munit-tools:with-attributes >
@@ -44,7 +44,7 @@
 		</munit:validation>
 	</munit:test>
 
-<munit:test name="sfdc-sapi-education-test-suite-sfdc-sapi-education-flowCreateTest" doc:id="94173905-217d-4ef2-bf92-e84f80d439b4" description="Test">
+<munit:test name="sfdc-sapi-education-test-suite-sfdc-sapi-education-flowCreateTest" doc:id="94173905-217d-4ef2-bf92-e84f80d439b4" description="Test" ignore="true">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock when sf query for records" doc:id="46ea6b63-ea24-4fd6-8749-b42b92f9540e" processor="salesforce:query">
 				<munit-tools:with-attributes >

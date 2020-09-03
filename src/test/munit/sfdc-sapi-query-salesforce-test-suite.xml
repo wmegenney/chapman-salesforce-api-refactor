@@ -21,6 +21,7 @@
 		</munit:behavior>
 		<munit:execution >
 			<munit:set-event doc:name="Set Event" doc:id="28434847-7e48-407c-945c-d560d426c98a" >
+				<munit:payload value='#[[{EMPLID: "0000002"}]]' />
 				<munit:attributes value="#[{headers:{
 query:&quot;select Id from Contact where AQB__ContactExternalID__c ='0916425'&quot;}}]" mediaType="application/java" />
 			</munit:set-event>
