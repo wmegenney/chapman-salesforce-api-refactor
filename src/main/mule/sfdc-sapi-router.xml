@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
     
+	
 	<flow name="sfdc-sapi-2-main">
         <http:listener config-ref="sfdc-http-listener-config" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -11,6 +14,42 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
                 <http:body><![CDATA[#[payload]]]></http:body>
             </http:error-response>
         </http:listener>
+        <try doc:name="Try" doc:id="80d7e367-a6d0-4e73-9cb6-beb81022db65" >
+			<ee:transform doc:name="DW create variables" doc:id="0cc33cc0-b603-48b9-b317-a898efc95aed" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="username" ><![CDATA[%dw 2.0
+output application/json
+import fromBase64 from dw::core::Binaries
+var token=(attributes.headers.authorization splitBy ' ')[1]
+---
+(fromBase64(token) splitBy ':')[0]]]></ee:set-variable>
+					<ee:set-variable variableName="password" ><![CDATA[%dw 2.0
+output application/json
+import fromBase64 from dw::core::Binaries
+var token=(attributes.headers.authorization splitBy ' ')[1]
+---
+(fromBase64(token) splitBy ':')[1]]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<validation:is-true doc:name="Validate credentials" doc:id="638f7db0-879f-40d3-9230-7efea877f73e" expression="#[ vars.username == p('secure::http.listener.username')  and vars.password == p('secure::http.listener.password')  ]" message='"Invalid Credentials or Unauthorized Access"' config-ref="Validation_Config"/>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1627c6f7-a857-42a3-83d0-70dfc0052a42" >
+					<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="8e33e426-c26d-4924-b6bd-0b9da9058e5f" doc:name="DW send Error code and message">
+                    	<ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Invalid Credentials or Unauthorized Access"}]]></ee:set-payload>
+                    	</ee:message>
+                    	<ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[401]]></ee:set-variable>
+                    	</ee:variables>
+               		 </ee:transform>
+				</on-error-propagate>
+			</error-handler>
+		</try>
         <apikit:router config-ref="sfdc-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
@@ -106,7 +145,8 @@ output application/json
         <apikit:console config-ref="sfdc-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
