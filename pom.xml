@@ -49,10 +49,6 @@
                             <format>html</format>
                         </formats>
                         <ignoreFlows>
- 						  	<ignoreFlow>sfdc-sapi-education-flow</ignoreFlow>
- 						  	<ignoreFlow>sfdc-sapi-education-create-sub-flow</ignoreFlow>
- 						  	<ignoreFlow>sfdc-sapi-degreeDetails_common_Flow</ignoreFlow>
- 						  	<ignoreFlow>sfdc-sapi-education-update-sub-flow</ignoreFlow>
  						  	<ignoreFlow>sfdc-sapi-student-interest-flow</ignoreFlow>
 	  					</ignoreFlows>
                     </coverage>
