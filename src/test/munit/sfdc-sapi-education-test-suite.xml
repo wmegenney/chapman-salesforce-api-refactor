@@ -81,5 +81,151 @@
 			<munit-tools:assert-that doc:name="Assert that" doc:id="4f914bcd-0834-4b3d-b0b2-2d3b4ca3fec8" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
 		</munit:validation>
 	</munit:test>
+	<munit:test name="sfdc-sapi-education-test-suite-sfdc-sapi-education-create-flowTest" doc:id="5e4975da-5126-4e55-aa1b-9f62354b60c9" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0a6b4636-7c4e-4f97-84ad-7d6dfaa807d2" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query Salesforce to check records" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="data" value="#[[]]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="d229231b-a07b-4d91-8317-6a332431f62d" processor="salesforce:create-single">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Create single Education into Salesforce" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{status:"success",id:"0037A00000VSXsAQAX"}]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="a0eeb744-c77b-46b7-b518-09fe66010a45" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query_Name" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[[
+{Name: "Chapman"}
+]]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="efe46d6c-7f03-4758-89f1-7417a0b38f80" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert_degree_Details" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{status:"success",id:"0037A00000VSXsAQAX"}]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="3362ae76-146d-48ef-8c41-58104038852c" >
+				<munit:payload value='#[[
+  {
+    "AQB__Contact__c": "0032E00002szJxwQAE",
+    "AQB__Institution__c": "a0u2E00000B1IyhQAF",
+    "AQB__Campus__c": "Brandman",
+    "AQB__IsPrimaryDegree__c": "",
+    "AQB__HonoraryDegree__c": false,
+    "RecordTypeId": "0122E000000h0RrQAI",
+    "AQB__DegreeLevel__c": "Brandman - Graduate",
+    "AQB__Graduation_Month__c": "",
+    "AQB__GraduationYear__c": "",
+    "AQB__Type__c": "MAJ",
+    "AQB__Status__c": "",
+    "AQB__Department__c": "Business Admin University Coll",
+    "AQB__School__c": "CUC Bus &amp; Professional Studies",
+    "AQB__DegreeDiploma__c": "Master of Business Administration",
+    "AQB__FirstYearofAttendance__c": "2010",
+    "AQB__LastYearofAttendance__c": "",
+    "degree": {
+      "Contact__c": "000000002",
+      "Major_Minor__c": "Business Administration",
+      "Emphasis_Specialization_Track__c": "Information Security Mgmt"
+    }
+  }
+]]' encoding="UTF-8" mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to sfdc-sapi-education-flow" doc:id="57824ff4-c1d8-4271-ab6c-2c6b5bc8a056" name="sfdc-sapi-education-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="93964d13-318c-41ba-9fc8-bbcdedbb8e79" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="sfdc-sapi-education-test-suite-sfdc-sapi-education-update-flowTest" doc:id="612bef42-c82f-4f6d-865d-e85de49503fa" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="56a76779-1437-4dee-90b2-cc25ed8a06f7" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query Salesforce to check records" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="data" value='#[[{Id:"0037A00000VSXsAQAX"}]]' mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="960f6060-7643-4501-9b6f-609cf454e759" processor="salesforce:update-single">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Update single Education in Salesforce" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{status:"success",id:"0037A00000VSXsAQAX"}]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="87368712-b392-4da2-ad4c-409be211d3e6" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query_Name" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[[
+{Name: "Chapman"}
+]]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="436b63de-0517-4b2e-bc95-9826ecb5a9cc" processor="salesforce:upsert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Upsert_degree_Details" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[{status:"success",id:"0037A00000VSXsAQAX"}]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a8b2d5f7-e660-4eb8-b0eb-96dc91c2a1e7" >
+				<munit:payload value='#[[
+  {
+    "AQB__Contact__c": "0032E00002szJxwQAE",
+    "AQB__Institution__c": "a0u2E00000B1IyhQAF",
+    "AQB__Campus__c": "Brandman",
+    "AQB__IsPrimaryDegree__c": "",
+    "AQB__HonoraryDegree__c": false,
+    "RecordTypeId": "0122E000000h0RrQAI",
+    "AQB__DegreeLevel__c": "Brandman - Graduate",
+    "AQB__Graduation_Month__c": "",
+    "AQB__GraduationYear__c": "",
+    "AQB__Type__c": "MAJ",
+    "AQB__Status__c": "",
+    "AQB__Department__c": "Business Admin University Coll",
+    "AQB__School__c": "CUC Bus &amp; Professional Studies",
+    "AQB__DegreeDiploma__c": "Master of Business Administration",
+    "AQB__FirstYearofAttendance__c": "2010",
+    "AQB__LastYearofAttendance__c": "",
+    "degree": {
+      "Contact__c": "000000002",
+      "Major_Minor__c": "Business Administration",
+      "Emphasis_Specialization_Track__c": "Information Security Mgmt"
+    }
+  }
+]]' encoding="UTF-8" mediaType="application/java" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to sfdc-sapi-education-flow" doc:id="ed4e5ad3-ec47-40a4-b56e-3c5469e6e6b5" name="sfdc-sapi-education-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="873b5ea9-4684-469d-9a74-21edd30ef13b" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
 
 </mule>
