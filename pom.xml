@@ -48,9 +48,6 @@
                         <formats>
                             <format>html</format>
                         </formats>
-                        <ignoreFlows>
- 						  	<ignoreFlow>sfdc-sapi-student-interest-flow</ignoreFlow>
-	  					</ignoreFlows>
                     </coverage>
                 </configuration>
             </plugin>
