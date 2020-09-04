@@ -15,8 +15,15 @@
 					<munit-tools:with-attribute whereValue="Query Education Id Using EmplId " attributeName="doc:name" />
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
-					<munit-tools:payload value='#[{Id:"54548541545", item:[],successful:true}]' />
+					<munit-tools:variables >
+						<munit-tools:variable key="vEducationData" value='#[[{AQB__ContactExternalID__c: "000000002",Id:"ajhgklafsdgherg34"}]]' mediaType="application/java" />
+					</munit-tools:variables>
 				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when transform message" doc:id="b9da790a-bece-4098-bac8-82fc4ff5f592" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="DW create student interest request" attributeName="doc:name" />
+				</munit-tools:with-attributes>
 			</munit-tools:mock-when>
 			<munit-tools:mock-when doc:name="Mock when Query Student Interest To Check If Interest Is Present" doc:id="f27c4572-c25a-494d-bd12-424c12eb0575" processor="salesforce:query">
 				<munit-tools:with-attributes >
@@ -24,7 +31,7 @@
 				</munit-tools:with-attributes>
 				<munit-tools:then-return >
 					<munit-tools:variables >
-						<munit-tools:variable key="vStdInterestExitsData" value='#[{Id:"54548541545", item:[],successful:true}]' />
+						<munit-tools:variable key="vStdInterestExitsData" value='#[{aqc_externalid__c:"000000002"}]' mediaType="application/java" />
 					</munit-tools:variables>
 				</munit-tools:then-return>
 			</munit-tools:mock-when>
@@ -53,53 +60,7 @@
     "XC_AQ_DEG_LVL": "Undergraduate",
     "DESCR_GROUP_TYPE": "Gamma Beta Phi Society",
     "END_DT_MONTH": 5
-  },
-  {
-    "END_DT_YEAR": 1995,
-    "START_DT_MONTH": 9,
-    "END_DT_DAY": 30,
-    "INSTITUTION_NAME": "Chapman University",
-    "START_DT_DAY": 30,
-    "LAST_UPDT_DTTM": "1995-05-30T00:00:00",
-    "EMPLID": "0000332",
-    "START_DT_YEAR": 1991,
-    "DESCR_STDNT_GROUP": "Clubs",
-    "DESCR_POSITION": "Member",
-    "XC_AQ_DEG_LVL": "Undergraduate",
-    "DESCR_GROUP_TYPE": "Business Club",
-    "END_DT_MONTH": 5
-  },
-  {
-    "END_DT_YEAR": 1995,
-    "START_DT_MONTH": 9,
-    "END_DT_DAY": 30,
-    "INSTITUTION_NAME": "Chapman University",
-    "START_DT_DAY": 30,
-    "LAST_UPDT_DTTM": "1995-05-30T00:00:00",
-    "EMPLID": "0000332",
-    "START_DT_YEAR": 1991,
-    "DESCR_STDNT_GROUP": "Clubs",
-    "DESCR_POSITION": "Member",
-    "XC_AQ_DEG_LVL": "Undergraduate",
-    "DESCR_GROUP_TYPE": "Don Booth Anniversary",
-    "END_DT_MONTH": 5
-  },
-  {
-    "END_DT_YEAR": 1995,
-    "START_DT_MONTH": 9,
-    "END_DT_DAY": 30,
-    "INSTITUTION_NAME": "Chapman University",
-    "START_DT_DAY": 30,
-    "LAST_UPDT_DTTM": "1995-05-30T00:00:00",
-    "EMPLID": "0000332",
-    "START_DT_YEAR": 1991,
-    "DESCR_STDNT_GROUP": "Clubs",
-    "DESCR_POSITION": "Member",
-    "XC_AQ_DEG_LVL": "Undergraduate",
-    "DESCR_GROUP_TYPE": "Student Government Association",
-    "END_DT_MONTH": 5
-  }
-]]' mediaType="application/java" />
+  }]]' mediaType="application/java" />
 			</munit:set-event>
 			<flow-ref doc:name="Flow-ref to post:\sfdc\student-interest:application\json:sfdc-api-config" doc:id="e0c439ad-e994-41fb-86f2-9fae47532e0e" name="post:\sfdc\student-interest:application\json:sfdc-api-config"/>
 		</munit:execution>
@@ -107,7 +68,7 @@
 			<munit-tools:assert-that doc:name="Assert that" doc:id="2fbe3605-82f8-4562-b606-733f25e6cbc3" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="sfdc-sapi-student-interest-test-suite-sf-upsert-studentIntrest-type-in-salesforceTest" doc:id="eab20d9e-b7a2-48d1-b24e-6796c12db640" description="Test" ignore="true">
+	<munit:test name="sfdc-sapi-student-interest-test-suite-sf-upsert-studentIntrest-type-in-salesforceTest" doc:id="eab20d9e-b7a2-48d1-b24e-6796c12db640" description="Test">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock when Upsert Student Interest Into AQB__LLStudentInterestType__c" doc:id="0d77c0b8-deb1-4ab0-9504-71ca514e7b6b" processor="salesforce:upsert">
 				<munit-tools:with-attributes >
@@ -120,408 +81,11 @@
 		</munit:behavior>
 		<munit:execution >
 			<munit:set-event doc:name="Set Event" doc:id="ff774424-b7ad-4688-8242-bcda5fd2ad7f" >
-				<munit:payload value="#[[
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alpha Kappa Delta&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Beta Beta Beta&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Charles C. Chapman Scholars&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Gamma Beta Phi Honor Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Gamma Beta Phi Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Kappa Delta Pi&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Lambda Pi Eta&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Lambda Pi Eta Honor Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Mortar Board National College&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Natl Society College Scholar&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Omicron Delta Kappa Honor Soc.&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Phi Alpha Theta&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Phi Sigma Tau&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Pi Sigma Alpha&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Psi Chi&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Sigma Iota Rho&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Sigma Tau Delta&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Sigma Tau Delta Honor Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Awards - Honors&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Theta Alpha Kappa&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Academic Standards Commitee&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Accounting Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Action in Africa&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Active Minds&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Ad Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Advertising Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Agape&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Airsoft &amp; Paintball&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alliance of CU Entertain Techs&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alom&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alpha Kappa Psi&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alpha Kappa Psi Busn. Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alpha Omega Campus Ministry&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alpha Phi Omega&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Alternatives in Democracy&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Amer Med Women Association&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;America Marketing Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;America Medical Student Assoc&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;America Sign Language&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;American Chemical Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;American Marketing Assoc&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Anime Escape&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Anthropology Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Anyone Can Cook&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Arabic Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Art History Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Asian Pacific Student Assoc&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Asoc Cult Eth Natn Trad Slce&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Assoc Schlool Psychologist&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Assoc for Computing Machine&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Assoc. for Computing Machinery&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Association of School Counsel&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Athletic Training Stu Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Aviation Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;B+ Foundation&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Baha'is of Chapman&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Ballroom &amp; Swing Dance Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Beach Volleyball Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Belly Dance Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Bike Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Black Student Union&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Breaking Chains Edu&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Burnt Marshmallow Camp Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;BusAnalytic and Manage&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Business Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;CEER Yearbook Staff&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;CLFF&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;CU Health Professions Society&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Calif. Student Teachers' Assn.&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Calliope&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Camp Kesem&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Campus Christian Council&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Campus Crusade for Christ&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chamber Orchestra&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chamber Singers&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapel Staff&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Ballroom&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Chabad&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Choir Tour&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Conch&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Consulting Group&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Dance Alliance&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Dance Team&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Enetwork&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Feminists&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Forensics&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman International Studies&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Live!&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman MEDLIFE&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Muscians Outreach Org&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman NGU&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Nerf Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Outdoors Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman OxFam&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Photo Club&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Quartet&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Real Estate Assoc&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Runs SoCal&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Runway&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Skeptics&quot;
-  },
-  {
-    &quot;DESCR_STDNT_GROUP&quot;: &quot;Clubs&quot;,
-    &quot;DESCR_GROUP_TYPE&quot;: &quot;Chapman Ski Snowboard Club&quot;
-  }
-]]" mediaType="application/java" />
+				<munit:payload value='#[
+  [{
+    "DESCR_STDNT_GROUP": "Awards - Honors",
+    "DESCR_GROUP_TYPE": "Alpha Kappa Delta"
+  }]]' mediaType="application/java" />
 			</munit:set-event>
 			<flow-ref doc:name="Flow-ref to sf-upsert-studentIntrest-type-in-salesforce" doc:id="27fd79bb-f410-4369-8b9e-26fa7a752e64" name="post:\sfdc\student-interest-type:application\json:sfdc-api-config"/>
 		</munit:execution>
